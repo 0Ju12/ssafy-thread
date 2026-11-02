@@ -1,0 +1,69 @@
+/* D. 커뮤니티 대화형 : 전처리 댓글은 받은 말풍선, AI 증강 문장은 보낸 말풍선 */
+:root {
+  --bg: #F3F2F8;
+  --surface: #FFFFFF;
+  --surface-2: #F7F6FB;
+  --ink: #1E1B2E;
+  --sub: #6E6A85;
+  --line: #E6E4EF;
+  --line-soft: #EFEEF5;
+  --line-strong: #D3D0E0;
+  --accent: #5B4CF0;
+  --accent-strong: #4A3BD6;
+  --accent-ink: #FFFFFF;
+  --accent-weak: #ECEAFE;
+  --focus: #5B4CF0;
+  --danger: #E5484D;
+  --danger-weak: #FDECEC;
+  --warn: #8A5A00;
+  --warn-weak: #FFF4D6;
+  --clean: #0F8F6E;
+  --clean-weak: #E2F5EE;
+  --aug: #5B4CF0;
+  --aug-weak: #ECEAFE;
+  --ok: #0F8F6E;
+  --mark: #ECEAFE;
+  --topbar-bg: rgba(243, 242, 248, .9);
+  --input-bg: #FFFFFF;
+  --panel-border: #E6E4EF;
+  --radius-lg: 18px;
+  --radius-sm: 12px;
+  --radius-mark: 50% 50% 50% 4px;
+  --font-ui: "Pretendard Variable", Pretendard, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-num: var(--font-ui);
+  --h1: 36px;
+}
+.brand-mark { border-radius: 50% 50% 50% 4px; }
+
+.chat-layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 24px; align-items: start; margin-bottom: 20px; }
+.chat-side { position: sticky; top: 76px; }
+.chat-side .summary { margin: 0; }
+@media (max-width: 960px) { .chat-layout { grid-template-columns: 1fr; } .chat-side { position: static; } }
+
+.post-head { display: flex; gap: 16px; align-items: center; margin: 4px 0 18px; }
+.avatar { flex: none; display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; background: var(--accent); color: #FFFFFF; font-weight: 800; font-size: 20px; }
+.post-head .stock-name { font-size: 34px; margin: 0 0 2px; }
+
+.layout-chat .flow { background: transparent; border: 0; box-shadow: none; gap: 8px; margin-top: 4px; overflow: visible; }
+.layout-chat .flow-step { flex: 0 0 auto; display: flex; align-items: baseline; gap: 8px; padding: 8px 16px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); }
+.layout-chat .flow-num { font-size: 20px; }
+
+.thread { margin-top: 28px; }
+.turn { display: flex; flex-direction: column; gap: 6px; margin: 16px 0; }
+.bubble { max-width: 78%; margin: 0; padding: 11px 16px; border-radius: 18px; font-size: 15px; line-height: 1.55; white-space: pre-line; }
+.bubble .who { display: block; font-size: 12px; font-weight: 600; margin-bottom: 2px; }
+.bubble-in { align-self: flex-start; background: #FFFFFF; border: 1px solid var(--line); border-top-left-radius: 6px; }
+.bubble-in .who { color: var(--sub); }
+.bubble-out { align-self: flex-end; background: var(--accent); color: #FFFFFF; border-top-right-radius: 6px; }
+.bubble-out .who { color: rgba(255, 255, 255, .78); }
+
+details.originals { border: 1px solid var(--line); padding: 16px 20px; margin-top: 24px; }
+.originals summary .count { font-weight: 500; color: var(--sub); font-size: 13px; }
+.origin-list { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+.bubble-raw { align-self: flex-start; max-width: 90%; background: var(--surface-2); border-top-left-radius: 6px; }
+.bubble-raw .who { color: var(--sub); }
+.bubble-hidden { align-self: flex-start; max-width: 90%; background: var(--danger-weak); border-top-left-radius: 6px; }
+.bubble-hidden .who { color: var(--danger); }
+.bubble-hidden .text { color: var(--sub); text-decoration: line-through; text-decoration-color: var(--danger); }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #FFFFFF; }
+@media (max-width: 560px) { .bubble { max-width: 92%; } .post-head .stock-name { font-size: 28px; } }

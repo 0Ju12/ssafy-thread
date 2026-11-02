@@ -1,0 +1,16 @@
+{# ---------------- 요약 (F610) ---------------- #}
+  <section class="panel summary" id="summary">
+    <div class="section-row">
+      <h2 class="section-title">댓글 요약</h2>
+      <form method="post" action="{% url 'comments:summary' result.pk %}">
+        {% csrf_token %}
+        <button class="btn btn-quiet" type="submit">{% if result.summary %}다시 요약하기{% else %}요약 만들기{% endif %}</button>
+      </form>
+    </div>
+    {% if result.summary %}
+      <div class="summary-body">{{ result.summary }}</div>
+      <p class="muted">원본 댓글 {{ result.raw_comments|length }}개 전체를 바탕으로 AI가 만든 요약입니다.</p>
+    {% else %}
+      <p class="empty">아직 요약이 없습니다. 요약 만들기를 눌러 주세요.</p>
+    {% endif %}
+  </section>

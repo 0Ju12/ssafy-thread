@@ -1,0 +1,47 @@
+/* A. 클린 증권 : 토스증권 사용자에게 익숙한 밝은 화면. 큰 종목명 한 줄이 주인공 */
+:root {
+  --bg: #F2F4F6;
+  --surface: #FFFFFF;
+  --surface-2: #F7F8FA;
+  --ink: #191F28;
+  --sub: #6B7684;
+  --line: #E5E8EB;
+  --line-soft: #F2F4F6;
+  --line-strong: #D1D6DB;
+  --accent: #3182F6;
+  --accent-strong: #1B64DA;
+  --accent-ink: #FFFFFF;
+  --accent-weak: #E8F3FF;
+  --focus: #3182F6;
+  --danger: #F04452;
+  --danger-weak: #FFEEEF;
+  --warn: #9A6400;
+  --warn-weak: #FFF6E0;
+  --clean: #1B64DA;
+  --clean-weak: #E8F3FF;
+  --aug: #6B4EFF;
+  --aug-weak: #F0EDFF;
+  --ok: #1B64DA;
+  --mark: #E8F3FF;
+  --topbar-bg: rgba(255, 255, 255, .88);
+  --input-bg: #FFFFFF;
+  --panel-border: transparent;
+  --radius-lg: 20px;
+  --radius-sm: 12px;
+  --radius-mark: 7px;
+  --font-ui: "Pretendard Variable", Pretendard, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-num: var(--font-ui);
+  --h1: 36px;
+  --stock-size: 52px;
+  --flow-num-size: 34px;
+}
+.brand-mark { background: linear-gradient(135deg, #3182F6 0 50%, #1B64DA 50% 100%); }
+.searchbar.is-hero .search input { border-color: transparent; box-shadow: 0 1px 2px rgba(25, 31, 40, .06); font-size: 18px; padding: 15px 18px; }
+.searchbar.is-hero .search input:focus { border-color: var(--accent); }
+.example { background: #FFFFFF; border-color: transparent; }
+.flow { gap: 0; }
+.flow-step.is-total { background: #F9FAFB; }
+.col-head { border-bottom: 0; padding-bottom: 6px; }
+.col-head .count { font-size: 15px; }
+.col li { border-bottom-color: #F2F4F6; }
+.log { background: #F7F8FA; }

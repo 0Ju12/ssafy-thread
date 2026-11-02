@@ -1,0 +1,12 @@
+<script>
+  // 통합 데이터 표 : 단계별로 걸러 보기
+  document.getElementById('stage-chips').addEventListener('click', function (e) {
+    const chip = e.target.closest('.chip');
+    if (!chip) return;
+    document.querySelectorAll('#stage-chips .chip').forEach(function (c) { c.setAttribute('aria-pressed', c === chip ? 'true' : 'false'); });
+    const f = chip.dataset.filter;
+    document.querySelectorAll('#records-table tbody tr').forEach(function (tr) {
+      tr.hidden = f !== 'all' && tr.dataset.stage !== f;
+    });
+  });
+</script>

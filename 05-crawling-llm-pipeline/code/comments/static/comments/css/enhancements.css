@@ -1,0 +1,42 @@
+/* 11개 테마 공통 추가 기능. 각 테마의 --surface, --ink, --accent 변수를 상속 */
+.enhance-actions { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:18px; }
+.enhance-actions .section-title { margin-bottom:4px; }
+.enhance-actions .muted { margin:0; }
+.enhance-controls { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+.enhance-controls label, .pair-toolbar label { font-size:13px; color:var(--sub); font-weight:700; }
+.enhance-link { display:inline-flex; align-items:center; justify-content:center; text-decoration:none; min-height:40px; padding:8px 12px; }
+.enhance-select,.pair-toolbar input { background:var(--surface); color:var(--ink); border:1px solid var(--line-strong); border-radius:var(--radius-sm); padding:10px 12px; font:inherit; max-width:100%; }
+.insight-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+.insight-cell { padding:16px; border:1px solid var(--line); border-radius:var(--radius-sm); background:var(--surface-2); }
+.insight-cell h3 { font-size:15px; margin:0 0 16px; }
+.insight-cell .muted { margin:14px 0 0; line-height:1.6; }
+.insight-row { display:flex; justify-content:space-between; align-items:center; gap:8px; font-size:13px; margin:12px 0 4px; }
+.insight-row strong { font-family:var(--font-num); font-variant-numeric:tabular-nums; }
+.bar-track { height:8px; overflow:hidden; border-radius:99px; background:var(--line); }
+.bar-fill { height:100%; background:var(--accent); border-radius:99px; max-width:100%; }
+.bar-secondary { background:var(--aug); }
+.keyword-cloud { display:flex; gap:8px; flex-wrap:wrap; }
+.keyword-pill { padding:5px 10px; border-radius:999px; border:1px solid var(--line-strong); background:var(--surface); font-size:13px; }
+.keyword-pill strong { color:var(--accent-strong,var(--accent)); margin-left:5px; }
+.pair-toolbar { display:flex; align-items:center; gap:10px; margin:16px 0; }
+.pair-toolbar input { flex:1; min-width:0; }
+.pair-items { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+.pair-card { border:1px solid var(--line); border-radius:var(--radius-sm); background:var(--surface-2); padding:15px; min-width:0; }
+.pair-card-head { display:flex; align-items:center; justify-content:space-between; gap:8px; margin:0 0 10px; }
+.pair-steps { display:grid; gap:8px; }
+.pair-step { padding:11px; border:1px solid var(--line-soft,var(--line)); border-radius:var(--radius-sm); background:var(--surface); }
+.pair-step p { margin:4px 0 0; white-space:pre-wrap; }
+.pair-label { color:var(--sub); font-size:12px; font-weight:700; }
+.diff-highlight { background:#FFE486; color:#1B2430; padding:1px 2px; border-radius:2px; }
+.quality-issue { font-size:13px; color:var(--danger); margin:10px 0 0; }
+.compare-select-form { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:18px; }
+.compare-select-form select { flex:1; min-width:180px; }
+.compare-texts { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.compare-texts .panel { min-width:0; }
+.compare-texts li { padding:4px 0; }
+@media (max-width:960px) { .insight-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .insight-keywords { grid-column:1/-1; } }
+@media (max-width:650px) { .insight-grid,.pair-items,.compare-texts { grid-template-columns:1fr; } .insight-keywords { grid-column:auto; } .enhance-controls { width:100%; } .enhance-controls > * { flex:1 1 auto; } .enhance-actions .btn { width:auto; } .pair-comparison { padding:16px; } }
+
+/* 토스증권 동일 브라우저 수집 스냅샷: 11개 테마 공통 */
+.ts-market-snapshot{margin:22px 0;padding:24px;border:1px solid var(--line,#dce3ed);border-radius:20px;background:var(--surface,#fff);color:var(--text,#18253a)}
+.ts-market-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}.ts-market-head h2{font-size:20px;margin:5px 0}.ts-market-head p,.ts-market-foot,.ts-market-date{font-size:12px;opacity:.75}.ts-market-kicker{letter-spacing:.11em;font-size:10px;color:#7285ba;font-weight:800}.ts-market-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:17px 0}.ts-market-tile{display:grid;gap:7px;padding:16px;border-radius:13px;background:var(--surface2,#eef2f9);border:1px solid var(--line,#dfe6ef)}.ts-market-tile small{font-size:12px;opacity:.75}.ts-market-tile strong{font-size:23px;font-variant-numeric:tabular-nums}.ts-market-tile span{font-size:12px}.ts-market-tile .up{color:#d54b62}.ts-market-tile .down{color:#3670dc}.ts-market-ranks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.ts-market-ranks>div{border:1px solid var(--line,#dce3ed);padding:13px;border-radius:12px}.ts-market-ranks h3{font-size:14px;margin:0 0 10px}.ts-market-ranks p{display:flex;justify-content:space-between;font-size:12px;gap:8px;margin:6px 0}.ts-market-alert{padding:13px;border-radius:12px;background:#fff0e4;color:#93552a;font-size:12px}.ts-market-foot{line-height:1.7}.ts-market-foot a{color:#4268d6}@media(max-width:680px){.ts-market-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ts-market-ranks{grid-template-columns:1fr}.ts-market-snapshot{padding:15px}.ts-market-tile strong{font-size:18px}}

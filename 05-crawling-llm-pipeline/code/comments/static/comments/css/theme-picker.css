@@ -1,0 +1,23 @@
+/* Accessible floating theme gallery: independent of page theme */
+.theme-picker{position:fixed;right:18px;bottom:18px;z-index:9999;font:14px/1.45 Pretendard,'Malgun Gothic',sans-serif;color:#202737}
+.theme-picker>summary{cursor:pointer;list-style:none;background:#202b48;color:#fff;padding:13px 17px;border:1px solid #fff3;border-radius:999px;box-shadow:0 8px 24px #0003;font-weight:750;display:flex;gap:9px;align-items:center}
+.theme-picker>summary::-webkit-details-marker{display:none}.theme-picker>summary:focus-visible{outline:3px solid #4287ff;outline-offset:3px}
+.theme-picker .picker-count{font-size:11px;opacity:.75;font-weight:500}
+.theme-picker-panel{position:absolute;bottom:56px;right:0;width:min(386px,calc(100vw - 24px));max-height:min(650px,75vh);overflow:auto;background:#fff;color:#202737;border-radius:18px;padding:20px;border:1px solid #e6e9f0;box-shadow:0 18px 55px #0003}
+.theme-picker-panel>strong{display:block;font-size:17px}.theme-picker-panel>p{margin:5px 0 14px;font-size:12px;color:#647084}
+.theme-picker-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.theme-option{display:flex;align-items:center;gap:8px;padding:10px 8px;color:#27334a;text-decoration:none;border:1px solid #e4e8f0;border-radius:10px;font-size:12px;font-weight:600;min-width:0}
+.theme-option:hover,.theme-option[aria-current=true]{background:#eff4ff;border-color:#5b82fb;color:#224dd5}
+.theme-swatch{flex:none;width:20px;height:20px;background:#eaeef9;border-radius:6px;border:1px solid #0001}
+.theme-option-clean .theme-swatch{background:linear-gradient(135deg,#3182f6 50%,#f2f4f6 50%)}
+.theme-option-board .theme-swatch{background:linear-gradient(135deg,#101e33 55%,#ffbd48 55%)}
+.theme-option-proof .theme-swatch{background:linear-gradient(135deg,#e8ede5 55%,#305b47 55%)}
+.theme-option-chat .theme-swatch{background:linear-gradient(135deg,#d6e9ff 50%,#8ecde5 50%)}
+.theme-option-desk .theme-swatch{background:linear-gradient(135deg,#0f2e33 50%,#e8a92f 50%)}
+.theme-option-story .theme-swatch{background:linear-gradient(135deg,#f7e7a4 50%,#e75a51 50%)}
+.theme-option-aurora .theme-swatch{background:linear-gradient(135deg,#35c8e9,#6554f5,#d97cf2)}
+.theme-option-atelier .theme-swatch{background:linear-gradient(135deg,#f7f5ef 50%,#1b5045 50%)}
+.theme-option-brutal .theme-swatch{background:linear-gradient(135deg,#ffe58f 50%,#f35b3f 50%);border:2px solid #171717}
+.theme-option-glass .theme-swatch{background:linear-gradient(135deg,#c6dafa,#d6d0f2,#cbf0e7)}
+.theme-option-console .theme-swatch{background:linear-gradient(135deg,#0b1319 50%,#62e5af 50%)}
+@media(max-width:480px){.theme-picker{bottom:10px;right:10px}.theme-picker-panel{bottom:50px;right:0;padding:14px}}

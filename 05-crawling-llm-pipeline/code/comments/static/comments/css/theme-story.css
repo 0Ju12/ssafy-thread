@@ -1,0 +1,76 @@
+/* F. 카드뉴스 스토리 : 단계마다 큰 숫자 하나, 위에서 아래로 읽는 이야기 */
+:root {
+  --bg: #FFFFFF;
+  --surface: #FFFFFF;
+  --surface-2: #F5F6F8;
+  --ink: #16181D;
+  --sub: #6A707C;
+  --line: #E7E9ED;
+  --line-soft: #F0F1F4;
+  --line-strong: #D5D9E0;
+  --accent: #2453FF;
+  --accent-strong: #1A3FD6;
+  --accent-ink: #FFFFFF;
+  --accent-weak: #E9EEFF;
+  --focus: #2453FF;
+  --danger: #F0384B;
+  --danger-weak: #FFE9EC;
+  --warn: #8A5A00;
+  --warn-weak: #FFF4D6;
+  --clean: #2453FF;
+  --clean-weak: #E9EEFF;
+  --aug: #8A3FFC;
+  --aug-weak: #F3EBFF;
+  --ok: #2453FF;
+  --mark: #F3EBFF;
+  --topbar-bg: rgba(255, 255, 255, .92);
+  --input-bg: #F5F6F8;
+  --radius-lg: 16px;
+  --radius-sm: 12px;
+  --radius-mark: 6px;
+  --font-ui: "Pretendard Variable", Pretendard, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-display: "Black Han Sans", var(--font-ui);
+  --font-num: var(--font-ui);
+}
+.brand-mark { background: #2453FF; }
+.intro h1 { font-weight: 400; font-size: 52px; letter-spacing: -0.01em; line-height: 1.15; }
+.search input { border-color: transparent; }
+
+.story-hero { padding: 36px 0 44px; border-bottom: 1px solid var(--line); }
+.story-hero .query-line { font-size: 18px; margin-bottom: 8px; }
+.story-hero .stock-name { font-weight: 400; font-size: clamp(56px, 9vw, 108px); line-height: 1; letter-spacing: -0.01em; margin: 0 0 14px; }
+
+.story-step { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 32px; padding: 52px 0; border-bottom: 1px solid var(--line); }
+.step-collect { --step: var(--ink); }
+.step-removed { --step: var(--danger); }
+.step-clean { --step: var(--clean); }
+.step-aug { --step: var(--aug); }
+.step-summary { --step: var(--ink); }
+.step-num { position: sticky; top: 84px; align-self: start; color: var(--step); }
+.big { font-family: var(--font-display); font-size: 104px; line-height: .9; }
+.unit { font-size: 28px; font-weight: 800; margin-left: 4px; }
+.step-summary .big { font-size: 60px; }
+.step-body { min-width: 0; }
+.step-body h2 { font-size: 27px; line-height: 1.35; letter-spacing: -0.025em; margin: 6px 0 10px; max-width: 26ch; }
+.lead { color: var(--sub); margin: 0 0 18px; max-width: 60ch; }
+.story-list { columns: 2; column-gap: 36px; margin: 18px 0 0; padding-left: 24px; }
+.story-list li { break-inside: avoid; padding: 7px 0; border-bottom: 1px solid var(--line-soft); white-space: pre-line; }
+.story-list li::marker { color: var(--sub); font-size: 12px; }
+.step-removed .story-list { columns: 1; }
+.story-pairs { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 18px 0 0; padding: 0; }
+.story-pairs li { padding: 14px 16px; background: var(--aug-weak); border-radius: 14px; }
+.pair-from { display: block; margin-bottom: 4px; color: var(--sub); font-size: 13px; }
+.pair-to { font-weight: 600; }
+.step-summary .summary { border: 0; padding: 0; margin: 0; box-shadow: none; background: transparent; }
+.step-summary .summary-body { font-size: 17px; background: var(--surface-2); }
+.story > .panel { margin-top: 32px; }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #FFFFFF; }
+
+@media (max-width: 760px) {
+  .story-step { grid-template-columns: 1fr; gap: 6px; padding: 32px 0; }
+  .step-num { position: static; }
+  .big { font-size: 64px; }
+  .story-list { columns: 1; }
+  .story-pairs { grid-template-columns: 1fr; }
+  .intro h1 { font-size: 38px; }
+}

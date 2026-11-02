@@ -1,0 +1,67 @@
+{% extends 'comments/base.html' %}
+{# F. 카드뉴스 스토리 : 수집 -> 제거 -> 정제 -> 증강 -> 요약을 위에서 아래로 읽는 구성 #}
+
+{% block title %}{{ result.stock_name }} 분석 결과{% endblock %}
+{% block body_class %}layout-story{% endblock %}
+{% block search_class %}is-compact{% endblock %}
+
+{% block content %}
+<div class="page-content story">
+  <section class="story-hero">
+    <p class="query-line">“{{ result.query }}”을 검색했더니</p>
+    <h1 class="stock-name">{{ result.stock_name }}</h1>
+    <p class="meta">{% if result.stock_code %}{{ result.stock_code }}, {% endif %}{{ result.created_at|date:"Y년 n월 j일 H:i" }} 커뮤니티 댓글 기준</p>
+    {% for w in result.warnings %}<div class="alert alert-warn">{{ w }}</div>{% endfor %}
+  </section>
+
+  {% include 'comments/_market_snapshot.html' %}
+  <section class="story-step step-collect">
+    <div class="step-num"><span class="big">{{ result.raw_comments|length }}</span><span class="unit">개</span></div>
+    <div class="step-body">
+      <h2>토스증권 커뮤니티에서 원본 데이터 {{ result.raw_comments|length }}개를 모았어요</h2>
+      <ol class="story-list">{% for item in originals %}<li class="{% if item.removed %}is-removed{% endif %}"><span class="text">{{ item.text }}</span>{% if item.removed %}<span class="tag">부적절</span>{% endif %}</li>{% endfor %}</ol>
+    </div>
+  </section>
+
+  <section class="story-step step-removed">
+    <div class="step-num"><span class="big">{{ result.removed_comments|length }}</span><span class="unit">개</span></div>
+    <div class="step-body">
+      <h2>부적절한 댓글 {{ result.removed_comments|length }}개를 걸러냈어요</h2>
+      <p class="lead">AI가 “{{ result.criteria }}”에 해당하는 댓글의 번호를 고르고, 코드가 원본에서 지웠습니다.</p>
+      {% if result.removed_comments %}<ul class="story-list">{% for t in result.removed_comments %}<li class="is-removed"><span class="text">{{ t }}</span></li>{% endfor %}</ul>{% endif %}
+    </div>
+  </section>
+
+  <section class="story-step step-clean">
+    <div class="step-num"><span class="big">{{ result.clean_comments|length }}</span><span class="unit">개</span></div>
+    <div class="step-body">
+      <h2>특수문자와 길이를 다듬어 전처리 후 {{ result.clean_comments|length }}개가 남았어요</h2>
+      <p class="lead">ㅋㅋㅋ 같은 반복, URL, 특수문자를 지우고 {{ iqr.lower|floatformat:"-1" }}~{{ iqr.upper|floatformat:"-1" }}자 댓글만 남겼습니다.</p>
+      <ol class="story-list">{% for text in result.clean_comments %}<li><span class="text">{{ text }}</span></li>{% endfor %}</ol>
+    </div>
+  </section>
+
+  <section class="story-step step-aug">
+    <div class="step-num"><span class="big">{{ result.augmented_comments|length }}</span><span class="unit">개</span></div>
+    <div class="step-body">
+      <h2>같은 뜻, 다른 표현으로 증강 데이터 {{ result.augmented_comments|length }}개를 만들었어요</h2>
+      <ol class="story-pairs">
+        {% for orig, aug in pairs %}<li><span class="pair-from">{{ orig }}</span><span class="pair-to">{{ aug }}</span></li>{% empty %}<li class="empty">증강 데이터가 없습니다.</li>{% endfor %}
+      </ol>
+    </div>
+  </section>
+
+  <section class="story-step step-summary">
+    <div class="step-num"><span class="big">요약</span></div>
+    <div class="step-body">{% include 'comments/_summary.html' %}</div>
+  </section>
+
+  {% include 'comments/_export_actions.html' %}
+  {% include 'comments/_insights.html' %}
+  {% include 'comments/_pair_compare.html' %}
+  {% include 'comments/_details.html' %}
+  {% include 'comments/_records.html' %}
+</div>
+{% endblock %}
+
+{% block extra_script %}{% include 'comments/_records_script.html' %}{% endblock %}

@@ -20,3 +20,8 @@ HTML · CSS · **Bootstrap 5.3**으로 도서 추천·독서 커뮤니티 서비
 
 ## 배운 것
 Bootstrap Navbar·Collapse·Carousel·Card·Pagination·Modal·Tabs · Grid 브레이크포인트 · Flexbox와 CSS Grid의 차이 · `@media` · `object-fit`
+
+## 코드
+[`code/`](code) — 컴포넌트별 HTML(`01-navbar` ~ `05-popular_thread`)과 통합 페이지(`06-main`, `07-book-detail`)
+
+> 도서 표지 이미지(`assets/`)는 제공 자료라 포함하지 않았습니다. 브라우저로 열면 레이아웃은 그대로 확인할 수 있고 이미지 자리만 비어 보입니다.

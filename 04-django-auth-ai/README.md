@@ -40,7 +40,7 @@ Python · Django 5.2 · Bootstrap 5.3 · SQLite · LLM API(Responses API) · Wik
 |---|---|---|---|
 | ![](screenshots/13_change_password.png) | ![](screenshots/14_after_password.png) | ![](screenshots/15_logout.png) | ![](screenshots/16_delete_account.png) |
 
-자동 테스트 45개 통과:
+테스트 실행 화면 (AI 기능 추가 전 39개 시점 캡처 · 현재 코드는 45개 통과):
 
 ![](screenshots/17_tests.png)
 

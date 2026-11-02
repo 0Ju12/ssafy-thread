@@ -1,0 +1,24 @@
+/* K · Terminal Pro — restrained engineer's cockpit */
+:root{--bg:#0b1319;--surface:#111f29;--surface-2:#152933;--ink:#e7f4ee;--sub:#90aaa8;--line:#27404b;--line-soft:#1b333d;--line-strong:#42626a;--accent:#62e5af;--accent-strong:#86f1c4;--accent-ink:#06251a;--accent-weak:#163c37;--focus:#ffcc72;--danger:#ff7884;--danger-weak:#432932;--warn:#ffd17e;--warn-weak:#393023;--clean:#7dd6ff;--clean-weak:#173747;--aug:#e2a2ff;--aug-weak:#382743;--ok:#64dfac;--mark:#48654c;--topbar-bg:rgba(9,19,26,.94);--input-bg:#142631;--radius-lg:10px;--radius-sm:6px;--radius-mark:3px;--h1:34px;--stock-size:46px;--flow-num-size:29px;--font-num:'IBM Plex Mono',Consolas,monospace;--font-log:'IBM Plex Mono',Consolas,monospace;--shadow:0 12px 32px rgba(0,0,0,.18)}
+body{background:linear-gradient(90deg,rgba(95,197,161,.025) 1px,transparent 1px),linear-gradient(rgba(95,197,161,.025) 1px,transparent 1px),#0b1319;background-size:28px 28px}
+.brand-mark{background:#62e5af;box-shadow:0 0 18px rgba(98,229,175,.35)}
+.topbar{border-bottom:1px solid #27404b}.topnav a:hover{color:var(--accent)}
+.searchbar.is-hero{padding:54px 32px;margin-top:18px;border:1px solid var(--line);border-left:4px solid #62e5af;background:#111f29}
+.intro h1:before{content:'> ANALYZE / MARKET_CONVERSATIONS';display:block;color:#62e5af;font:12px/1.4 Consolas,monospace;letter-spacing:.08em;margin-bottom:22px}
+.intro h1{font-weight:700}.search input{color:var(--ink)}.btn{font-family:var(--font-num);letter-spacing:-.04em}
+.flow{border:1px solid #27404b}.flow-step{border-left-color:#27404b}.flow-num{font-weight:600;letter-spacing:-.04em}.panel,.col{border:1px solid #27404b}
+.col-head{background:#152c36;border-bottom-color:#3b5a64}.col ol{line-height:1.75}.chip[aria-pressed=true]{color:#06251a;background:#62e5af}
+.layout-desk .topbar{display:flex}.desk{grid-template-columns:260px minmax(0,1fr)}.desk-side{top:54px;height:calc(100vh - 54px);background:#101f27;border-right:1px solid #27404b;color:var(--ink)}
+.desk-brand{color:#62e5af}.desk-tab{color:#90aaa8}.desk-tab:hover{background:#19333a;color:#e7f4ee}.desk-tab[aria-selected=true]{background:#1a373b;color:#62e5af;box-shadow:inset 3px 0 0 #62e5af}
+.desk-search .search input{background:#142631;color:#e7f4ee;border-color:#42626a}.desk-search .search input::placeholder{color:#90aaa8}
+.desk-search .btn{background:#62e5af;color:#06251a}.desk-history{color:#90aaa8}.layout-desk .footer{margin-left:260px}
+@media(max-width:860px){.desk{grid-template-columns:1fr}.desk-side{position:static;height:auto}.layout-desk .footer{margin-left:0}}
+
+
+/* Common refinements for this visual direction */
+.panel,.col,.flow,.searchbar.is-compact{transition:box-shadow .2s ease,transform .2s ease}
+.example:hover,.btn:hover{transform:translateY(-1px)}
+@media(prefers-reduced-motion:reduce){.panel,.col,.flow,.searchbar.is-compact,.example,.btn{transition:none;transform:none!important}}
+
+/* 기본 글꼴 토큰: 공통 base.css와 호환 */
+:root{--font-ui:"Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",sans-serif;--font-num:var(--font-ui);--font-text:var(--font-ui)}

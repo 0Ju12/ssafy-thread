@@ -1,0 +1,72 @@
+{% extends 'comments/base.html' %}
+
+{% block title %}{{ result.stock_name }} 분석 결과{% endblock %}
+{% block search_class %}is-compact{% endblock %}
+
+{% block content %}
+<div class="page-content">
+
+  {# ---------------- 결과 머리 : 입력 → 실제종목명, 단계별 개수 ---------------- #}
+  <section class="result-head">
+    <p class="query-line"><span class="query">“{{ result.query }}”</span> 검색 결과</p>
+    <h1 class="stock-name">{{ result.stock_name }}{% if result.stock_code %} <span class="stock-code">{{ result.stock_code }}</span>{% endif %}</h1>
+    <p class="meta">{{ result.created_at|date:"Y년 n월 j일 H:i" }} 수집. 부적절 판단 기준은 “{{ result.criteria }}”입니다.</p>
+
+    <ol class="flow" aria-label="단계별 댓글 수">
+      <li class="flow-step"><span class="flow-num">{{ result.raw_comments|length }}</span><span class="flow-label">원본 수집</span></li>
+      <li class="flow-step is-removed"><span class="flow-num">{{ result.removed_comments|length }}</span><span class="flow-label">부적절 제거</span></li>
+      <li class="flow-step is-clean"><span class="flow-num">{{ result.clean_comments|length }}</span><span class="flow-label">전처리 후</span></li>
+      <li class="flow-step is-augmented"><span class="flow-num">{{ result.augmented_comments|length }}</span><span class="flow-label">증강</span></li>
+      <li class="flow-step is-total"><span class="flow-num">{{ result.records|length }}</span><span class="flow-label">통합 레코드</span></li>
+    </ol>
+    {% for w in result.warnings %}<div class="alert alert-warn">{{ w }}</div>{% endfor %}
+  </section>
+
+  {% include 'comments/_market_snapshot.html' %}
+  {% include 'comments/_export_actions.html' %}
+  {% include 'comments/_insights.html' %}
+
+  {# ---------------- 원본 / 전처리 / 증강 (F605, F606) ---------------- #}
+  <section class="columns" aria-label="원본, 전처리, 증강 데이터 비교">
+    <article class="col col-original">
+      <header class="col-head">
+        <h2>원본 데이터</h2>
+        <span class="count">{{ result.raw_comments|length }}개</span>
+      </header>
+      <ol>
+        {% for item in originals %}
+          <li class="{% if item.removed %}is-removed{% endif %}"><span class="text">{{ item.text }}</span>{% if item.removed %}<span class="tag">부적절</span>{% endif %}</li>
+        {% endfor %}
+      </ol>
+    </article>
+    <article class="col col-clean">
+      <header class="col-head">
+        <h2>전처리 후</h2>
+        <span class="count">{{ result.clean_comments|length }}개</span>
+        <span class="col-note">길이 {{ iqr.lower|floatformat:"-1" }}~{{ iqr.upper|floatformat:"-1" }}자</span>
+      </header>
+      <ol>
+        {% for text in result.clean_comments %}<li><span class="text">{{ text }}</span></li>{% empty %}<li class="empty-item">정제 후 남은 댓글이 없습니다.</li>{% endfor %}
+      </ol>
+    </article>
+    <article class="col col-augmented">
+      <header class="col-head">
+        <h2>증강 데이터</h2>
+        <span class="count">{{ result.augmented_comments|length }}개</span>
+      </header>
+      <ol>
+        {% for orig, aug in pairs %}
+          <li><span class="text">{{ aug }}</span><span class="from">전처리 {{ forloop.counter }}번 “{{ orig|truncatechars:22 }}”에서 생성</span></li>
+        {% empty %}<li class="empty-item">증강 데이터가 없습니다. 위 경고를 확인하세요.</li>{% endfor %}
+      </ol>
+    </article>
+  </section>
+
+  {% include 'comments/_summary.html' %}
+  {% include 'comments/_pair_compare.html' %}
+  {% include 'comments/_details.html' %}
+  {% include 'comments/_records.html' %}
+</div>
+{% endblock %}
+
+{% block extra_script %}{% include 'comments/_records_script.html' %}{% endblock %}

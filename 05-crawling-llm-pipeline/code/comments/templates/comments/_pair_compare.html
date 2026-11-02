@@ -1,0 +1,37 @@
+<section class="panel pair-comparison" id="pair-comparison" aria-labelledby="pair-title">
+  <div class="section-row"><h2 class="section-title" id="pair-title">원문 → 전처리 → AI 증강 문장 검증</h2><span class="badge badge-clean">출처 연결</span></div>
+  <p class="muted">바뀐 부분을 형광펜으로 표시합니다. 숫자·방향 검사에서 통과해도 의미가 100% 유지되었다는 보장은 없습니다.</p>
+  {% if comparisons %}
+  <div class="pair-toolbar"><label for="pair-search">문장 검색</label><input id="pair-search" type="search" placeholder="원문 또는 증강 문장 검색"></div>
+  <div class="pair-items" id="pair-items">
+  {% for item in comparisons %}
+    <article class="pair-card" data-search="{{ item.original|default:'' }} {{ item.clean }} {{ item.augmented }}" data-quality="{{ item.status }}">
+      <header class="pair-card-head"><strong>#{{ item.number }}</strong>
+        {% if item.status == 'ok' %}<span class="badge badge-clean">규칙 검사 통과</span>
+        {% else %}<span class="badge badge-fail">수동 검토 필요</span>{% endif %}
+      </header>
+      <div class="pair-steps">
+        <div class="pair-step"><span class="pair-label">원본 댓글</span><p>{% if item.original is not None %}{{ item.original }}{% else %}<em class="muted">이전 저장 기록에는 원본 연결 정보가 없습니다.</em>{% endif %}</p></div>
+        <div class="pair-step"><span class="pair-label">전처리 후</span><p>{{ item.clean }}</p></div>
+        <div class="pair-step"><span class="pair-label">AI 증강 · 변경 강조</span><p>{{ item.highlighted }}</p></div>
+      </div>
+      {% for issue in item.issues %}<p class="quality-issue">⚠ {{ issue }}</p>{% endfor %}
+    </article>
+  {% endfor %}
+  </div>
+  <p class="muted" id="pair-empty" hidden>검색에 맞는 문장이 없습니다.</p>
+  {% else %}<p class="empty">증강된 데이터가 없어 문장 비교를 표시할 수 없습니다.</p>{% endif %}
+</section>
+<script>
+(function(){
+  const search = document.getElementById('pair-search'); if (!search) return;
+  search.addEventListener('input', function () {
+    const q = search.value.trim().toLocaleLowerCase(); let shown = 0;
+    document.querySelectorAll('#pair-items .pair-card').forEach(function (item) {
+      const visible = item.dataset.search.toLocaleLowerCase().includes(q);
+      item.hidden = !visible; if (visible) shown++;
+    });
+    document.getElementById('pair-empty').hidden = shown > 0;
+  });
+})();
+</script>

@@ -1,0 +1,19 @@
+/* H · Atelier Research — editorial ivory and midnight ink */
+:root{--bg:#f7f5ef;--surface:#fffefa;--surface-2:#f4f0e6;--ink:#1d2c2d;--sub:#75807b;--line:#dadbd0;--line-soft:#eeeae0;--line-strong:#b8c3b7;--accent:#1b5045;--accent-strong:#143d34;--accent-ink:#fff;--accent-weak:#e4eee8;--focus:#ad8454;--danger:#a74c4a;--danger-weak:#faeae8;--warn:#936427;--warn-weak:#fff2db;--clean:#2b7564;--clean-weak:#e4f0e8;--aug:#97692e;--aug-weak:#f5ecda;--ok:#2b7564;--mark:#f8e9aa;--topbar-bg:rgba(251,249,243,.96);--input-bg:#fffefa;--radius-lg:3px;--radius-sm:2px;--radius-mark:0px;--h1:40px;--stock-size:58px;--flow-num-size:35px;--font-display:Georgia,'Times New Roman',serif;--shadow:0 12px 35px rgba(25,52,41,.035)}
+body{background-image:repeating-linear-gradient(0deg,transparent 0 31px,rgba(27,80,69,.018) 32px)}
+.brand-mark{background:#1b5045;transform:rotate(45deg) scale(.8)}.topbar{border-bottom:2px solid #1d2c2d}
+.wrap{max-width:1140px}.searchbar.is-hero{border-top:3px solid #1b5045;padding:58px 0 34px;margin-top:32px}
+.intro h1,.stock-name,.section-title,.col-head h2{font-family:Georgia,'Gowun Batang',serif;letter-spacing:-.03em}
+.intro h1:before{content:'THE THRead REPORT  /  INSIGHT SERIES';display:block;font:11px/1.4 Arial,sans-serif;letter-spacing:.24em;color:#987341;margin-bottom:24px}
+.btn{font-weight:600;letter-spacing:.02em}.flow{border-top:2px solid #1d2c2d;border-bottom:1px solid #1d2c2d}
+.flow-step.is-total{background:#ece9df}.col{border-top:2px solid #1b5045}.col-head{border-bottom:1px solid #a8b2a7}
+.col ol{font-family:Georgia,'Gowun Batang',serif;font-size:16px;line-height:1.85}.panel{border-top:2px solid #1b5045}
+
+
+/* Common refinements for this visual direction */
+.panel,.col,.flow,.searchbar.is-compact{transition:box-shadow .2s ease,transform .2s ease}
+.example:hover,.btn:hover{transform:translateY(-1px)}
+@media(prefers-reduced-motion:reduce){.panel,.col,.flow,.searchbar.is-compact,.example,.btn{transition:none;transform:none!important}}
+
+/* 기본 글꼴 토큰: 공통 base.css와 호환 */
+:root{--font-ui:"Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",sans-serif;--font-num:var(--font-ui);--font-text:var(--font-ui)}

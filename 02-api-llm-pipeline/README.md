@@ -19,3 +19,20 @@
 
 ## 배운 것
 `.env` 키 관리 · `requests` 외부 API 호출 · JSON 처리 · 페이지네이션 · LLM 프롬프트 작성과 응답 파싱 · `gTTS` · 여러 기능을 하나의 데이터 파이프라인으로 연결하는 방법
+
+## 코드
+[`code/`](code) — A(API 수집) · B(필터링·TTS) · C(LLM 분류·분석) 단계별 풀이
+
+```bash
+cd 02-api-llm-pipeline/code
+pip install -r requirements.txt
+# .env 에 ALADIN_TTBKEY, GMS_KEY 입력
+python problem_C1.py
+```
+
+## 실행 화면
+| A2 · 키워드 수집 | C1 · AI 분야 상위 10권 |
+|---|---|
+| ![](screenshots/A2_ScreenShot.png) | ![](screenshots/C1_ScreenShot.png) |
+
+나머지 단계 실행 화면은 [`screenshots/`](screenshots)에 있습니다. 생성된 음성(mp3)·수집 결과 JSON은 용량·저작권 문제로 제외했습니다.

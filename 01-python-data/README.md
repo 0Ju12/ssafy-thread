@@ -19,3 +19,8 @@ Python 3.11 · `json` · `pathlib` · List/Dictionary · `lambda` · `sorted()`
 ## 느낀 점과 보완 방향
 데이터를 단순히 출력하는 것이 아니라 **원하는 형태로 가공하는 과정**이 중요하다는 것을 배웠습니다.
 함수화로 재사용성을 높이고, 예외 처리를 추가하고, pandas·Matplotlib로 분석·시각화를 확장하고 싶습니다.
+
+## 코드
+[`code/`](code) — 문제별 풀이(`problem_A1.py` ~ `problem_B5.py`)
+
+> SSAFY 제공 데이터(`books_*.json`)는 저장소에 포함하지 않아, 실행하려면 같은 형식의 JSON 파일 경로를 `file_path`에 지정해야 합니다.

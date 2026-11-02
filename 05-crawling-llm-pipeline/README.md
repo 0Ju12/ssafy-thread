@@ -37,7 +37,22 @@ Selenium 댓글 수집 → LLM 부적절 판단 → pandas 정제 → IQR 길이
 - 같은 Selenium 세션으로 KOSPI · KOSDAQ · USD/KRW 지표를 함께 수집
 
 ### 6. 테스트
-- 크롤러·LLM 호출을 `mock`으로 대체한 테스트
+- 크롤러·LLM 호출을 `mock`으로 대체한 **자동 테스트 41개**
 
 ## 기술
 Python · Django · Selenium · pandas · 정규식 · LLM API · StreamingHttpResponse(NDJSON) · threading/queue
+
+## 실행 방법
+
+```bash
+cd 05-crawling-llm-pipeline/code
+python -m venv venv && source venv/bin/activate
+pip install -r requirements.txt
+# .env 에 GMS_KEY 입력 (USE_SAMPLE_DATA=1 이면 토스증권 접속 없이 샘플로 동작)
+python manage.py migrate
+python manage.py runserver
+python manage.py test        # 41 tests
+```
+
+> `data/comments_sample.json`은 실제 커뮤니티 댓글 대신 **직접 작성한 예시 문장**으로 교체했습니다(타인 게시글 비공개).
+> 상세 문서: [디자인 가이드](code/DESIGN_GUIDE.md) · [검증 기록](code/VERIFICATION.md) · [기능 추가 설명서](code/기능추가_사용설명서.md)

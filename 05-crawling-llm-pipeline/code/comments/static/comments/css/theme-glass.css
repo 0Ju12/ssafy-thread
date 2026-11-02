@@ -1,0 +1,24 @@
+/* J · Glass Horizon — floating translucent panels */
+:root{--bg:#deedf4;--surface:rgba(255,255,255,.72);--surface-2:rgba(244,250,255,.66);--ink:#19334a;--sub:#547287;--line:rgba(255,255,255,.8);--line-soft:rgba(255,255,255,.6);--line-strong:#adcbd8;--accent:#167cb0;--accent-strong:#0b5b84;--accent-ink:#fff;--accent-weak:#deeffa;--focus:#167cb0;--danger:#c95371;--danger-weak:#ffe8ee;--warn:#88620d;--warn-weak:#fff2d5;--clean:#1478a8;--clean-weak:#d8f0fc;--aug:#7756b5;--aug-weak:#eee7ff;--ok:#1a806b;--mark:#d4f3ff;--topbar-bg:rgba(255,255,255,.5);--input-bg:rgba(255,255,255,.87);--radius-lg:24px;--radius-sm:14px;--radius-mark:8px;--h1:40px;--stock-size:46px;--shadow:0 18px 50px rgba(36,91,119,.12)}
+body{background:radial-gradient(circle at 0% 5%,#c6dafa,transparent 36%),radial-gradient(circle at 99% 26%,#d6d0f2,transparent 39%),radial-gradient(circle at 50% 100%,#cbf0e7,transparent 45%),#dfeef5;background-attachment:fixed}
+.topbar,.panel,.col,.searchbar.is-compact,.flow{backdrop-filter:blur(22px) saturate(1.35);-webkit-backdrop-filter:blur(22px) saturate(1.35);border:1px solid rgba(255,255,255,.85)}
+.brand-mark{background:linear-gradient(150deg,#20a4ca,#8866d6)}
+.searchbar.is-hero{margin:20px 0 26px;padding:64px 45px 42px;border-radius:32px;background:linear-gradient(120deg,rgba(255,255,255,.77),rgba(230,242,255,.42));border:1px solid #fff;box-shadow:var(--shadow);backdrop-filter:blur(18px)}
+.btn{background:linear-gradient(135deg,#188ab5,#596ed2)}
+.col-head{background:rgba(255,255,255,.35)}.flow-step.is-total{background:rgba(255,255,255,.38)}
+.layout-desk .topbar{display:flex}.desk{grid-template-columns:250px minmax(0,1fr);max-width:1600px;margin:auto;min-height:calc(100vh - 65px)}
+.desk-side{top:66px;height:calc(100vh - 66px);margin:16px;border:1px solid #fff;border-radius:24px;background:rgba(255,255,255,.53);backdrop-filter:blur(26px);color:var(--ink);box-shadow:var(--shadow)}
+.desk-brand{color:var(--ink)}.desk-tab{color:var(--sub)}.desk-tab:hover{background:rgba(255,255,255,.6);color:var(--ink)}
+.desk-tab[aria-selected=true]{background:rgba(255,255,255,.85);color:var(--ink);box-shadow:inset 3px 0 0 var(--accent)}
+.desk-search .search input{background:rgba(255,255,255,.9);border:1px solid #b9d4df;color:var(--ink)}.desk-search .search input::placeholder{color:var(--sub)}.desk-search .btn{background:linear-gradient(135deg,#188ab5,#596ed2);color:white}
+.desk-history{color:var(--accent)}.desk-main{padding:30px 18px 28px}.layout-desk .footer{margin-left:0}
+@media(max-width:860px){.desk{display:block}.desk-side{position:static;height:auto;margin:12px}.desk-main{padding:16px}.searchbar.is-hero{padding:35px 20px}}
+
+
+/* Common refinements for this visual direction */
+.panel,.col,.flow,.searchbar.is-compact{transition:box-shadow .2s ease,transform .2s ease}
+.example:hover,.btn:hover{transform:translateY(-1px)}
+@media(prefers-reduced-motion:reduce){.panel,.col,.flow,.searchbar.is-compact,.example,.btn{transition:none;transform:none!important}}
+
+/* 기본 글꼴 토큰: 공통 base.css와 호환 */
+:root{--font-ui:"Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",sans-serif;--font-num:var(--font-ui);--font-text:var(--font-ui)}

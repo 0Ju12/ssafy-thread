@@ -1,0 +1,14 @@
+{% extends 'comments/base.html' %}
+{% load humanize %}
+{% block title %}종목 검색{% endblock %}
+{% block page %}
+<main class="wrap mk-page mk-subpage"><div class="mk-back"><a href="{% url 'market:dashboard' %}{% if demo %}?demo=1{% endif %}">← 시장 현황으로</a></div>
+<section class="mk-page-lead"><span class="mk-overline">STOCK LOOKUP</span><h1>종목 검색</h1><p>마지막으로 수집된 인기 종목 목록에서만 검색합니다. 전체 상장 종목 검색은 기존 댓글 분석을 이용하세요.</p></section>
+<form class="mk-hero-search mk-search-page" method="get"><label for="mk-lookup" class="sr-only">종목명 검색</label><input id="mk-lookup" name="q" value="{{ q }}" placeholder="종목명, 코드" maxlength="60" required>{% if demo %}<input type="hidden" name="demo" value="1">{% endif %}<button type="submit">검색 →</button></form>
+{% if market.error or search_error %}<div class="mk-alert">{{ search_error|default:market.error }} <a href="{% url 'market:search' %}?demo=1&q={{ q|urlencode }}">데모 검색</a></div>{% endif %}
+<div class="mk-section-top"><h2>{% if q %}“{{ q }}” 검색 결과{% else %}종목을 입력해 주세요{% endif %}</h2><span class="mk-source-tag">{{ results|length }}개 표시</span></div>
+<section class="mk-panel mk-ranking-panel"><div class="mk-table-scroll"><table class="mk-rank-table"><thead><tr><th>종목</th><th>시장</th><th class="mk-align-right">현재가</th><th class="mk-align-right">등락</th><th class="mk-align-right">분석하기</th></tr></thead><tbody>
+{% for s in results %}<tr><td>{% if s.code %}<a class="mk-stock-link" href="{% url 'market:stock_detail' s.code %}{% if demo %}?demo=1{% endif %}">{{ s.name }}</a>{% else %}<span class="mk-stock-link">{{ s.name }}</span>{% endif %}<span class="mk-stock-code">{{ s.code|default:"코드 미확인" }}</span></td><td>{{ s.market }}</td><td class="mk-align-right">{% if s.price %}{{ s.price|floatformat:0|intcomma }}원{% else %}시세 없음{% endif %}</td><td class="mk-align-right"><span class="mk-rate {% if s.change_pct < 0 %}mk-fall{% else %}mk-rise{% endif %}">{% if s.change_pct > 0 %}+{% endif %}{% if demo %}{{ s.change_pct|floatformat:2 }}%{% else %}화면 수집값{% endif %}</span></td><td class="mk-align-right"><a class="mk-analysis-link" href="{% url 'comments:index' %}?company={{ s.name|urlencode }}#search-title">댓글 분석 ↗</a></td></tr>
+{% empty %}<tr><td colspan="5" class="mk-table-empty">검색 결과가 없습니다.</td></tr>{% endfor %}
+</tbody></table></div></section></main>
+{% endblock %}

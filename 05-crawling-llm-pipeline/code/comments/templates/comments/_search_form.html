@@ -1,0 +1,7 @@
+<form id="company-form" class="search" method="post" action="{% url 'comments:run' %}"
+      data-stream-url="{% url 'comments:run_stream' %}">
+  {% csrf_token %}
+  <label for="{{ form.company.id_for_label }}" class="sr-only">회사명</label>
+  {{ form.company }}
+  <button class="btn" type="submit" id="submit-btn">댓글 분석하기</button>
+</form>

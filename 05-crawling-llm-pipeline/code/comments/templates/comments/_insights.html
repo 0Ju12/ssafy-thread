@@ -1,0 +1,31 @@
+<section class="panel insights" id="insights" aria-labelledby="insights-title">
+  <div class="section-row"><h2 class="section-title" id="insights-title">실제 댓글 데이터 인사이트</h2><span class="badge badge-original">실측 데이터</span></div>
+  <p class="muted">감성 점수나 투자 전망이 아니라 현재 저장된 댓글의 길이·단계별 수량·키워드 빈도를 계산한 결과입니다.</p>
+  <div class="insight-grid">
+    <div class="insight-cell">
+      <h3>댓글 처리 흐름</h3>
+      {% for step in insights.steps %}
+      <div class="insight-row"><span>{{ step.label }}</span><strong>{{ step.count }}개</strong></div>
+      <div class="bar-track"><div class="bar-fill" style="width:{{ step.pct }}%"></div></div>
+      {% endfor %}
+      <p class="muted">전처리 완료와 증강 생성은 서로 다른 단계입니다.</p>
+    </div>
+    <div class="insight-cell">
+      <h3>원본 댓글 길이 분포</h3>
+      {% for group in insights.lengths %}
+      <div class="insight-row"><span>{{ group.label }}</span><strong>{{ group.count }}개 ({{ group.pct }}%)</strong></div>
+      <div class="bar-track"><div class="bar-fill bar-secondary" style="width:{{ group.pct }}%"></div></div>
+      {% endfor %}
+      <p class="muted">원본 평균 길이 {{ insights.avg_length }}자</p>
+    </div>
+    <div class="insight-cell insight-keywords">
+      <h3>주요 단어 (최대 8개)</h3>
+      {% if insights.keywords %}
+        <div class="keyword-cloud">
+          {% for word in insights.keywords %}<span class="keyword-pill">{{ word.word }} <strong>{{ word.count }}</strong></span>{% endfor %}
+        </div>
+      {% else %}<p class="muted">표시할 단어가 없습니다.</p>{% endif %}
+      <p class="muted">{{ insights.keyword_note }}</p>
+    </div>
+  </div>
+</section>

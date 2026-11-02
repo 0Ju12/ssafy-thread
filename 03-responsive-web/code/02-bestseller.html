@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>ThRead - Bestseller</title>
+<link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" rel="stylesheet"/>
+<style>
+      /* 폰트 정의 */
+      @font-face {
+        font-family: "SBAggro_L";
+        src: url("assets/fonts/SBAggroOTF_L.ttf") format("ttf");
+      }
+      @font-face {
+        font-family: "GmarketSansTTFMedium";
+        src: url("assets/fonts/GmarketSansTTFMedium.ttf") format("ttf");
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        color: #333;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+      }
+    </style>
+<style>
+/* 추가 구현: 원본 style 블록을 유지하고 필요한 스타일만 확장 */
+
+@font-face{font-family:Gmarket;src:url("assets/fonts/GmarketSansTTFMedium.ttf") format("truetype");font-display:swap}
+@font-face{font-family:Aggro;src:url("assets/fonts/SBAggroOTF_L.ttf") format("truetype");font-display:swap}
+:root{--accent:#fe4a51;--ink:#25252a}*{box-sizing:border-box}body{margin:0;color:var(--ink);font-family:Arial,"Malgun Gothic",sans-serif}h1,h2,h3,h4,.brand{font-family:Gmarket,Arial,sans-serif}.section-title{font-size:1.6rem;font-weight:700}.section-wrap{width:80%;max-width:1200px;margin:auto}.accent{color:var(--accent)!important}.site-nav{position:absolute;top:0;left:0;right:0;z-index:1050;background:transparent}.brand{color:#fff;text-decoration:none;font-size:1.5rem}.brand .read{color:var(--accent)}.site-nav .nav-link{color:#fff!important;font-family:Aggro,Arial,sans-serif;padding:.8rem 1rem!important}.site-nav .nav-link:hover,.site-nav .nav-link:focus{color:var(--accent)!important}.site-nav .navbar-toggler{border-color:#fff6}.site-nav .navbar-toggler-icon{filter:brightness(0) invert(1)}.hero-section{min-height:80vh;position:relative;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;background:#36414a}.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.hero-overlay{position:absolute;inset:0;background:rgba(0,0,0,.53)}.hero-content{position:relative;z-index:2;padding:100px 1rem 40px}.hero-title{font-size:clamp(1.55rem,3.3vw,2.7rem);line-height:1.5;font-weight:bold;background:#3339;padding:.3rem 1rem;border-radius:.3rem}.hero-subtitle{font-family:Gmarket,sans-serif;font-size:1.5rem}.mobile-break{display:none}
+.bestseller-container{display:flex;gap:2rem;align-items:center}.bestseller-title{flex:0 0 20%;font-size:1.5rem}.bestseller-carousel{flex:1;min-width:0}.book-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem;padding:8px 3rem 6px 0}.book-cover{display:block;object-fit:cover;width:150px;height:220px;max-width:100%;margin:auto;box-shadow:0 4px 12px #0002}.book-name{text-align:center;font-size:.82rem;margin-top:.6rem}.carousel-control-next{width:45px}.carousel-control-next-icon{background-color:#333;border-radius:50%;background-size:50%;padding:1.3rem}
+.ai-grid{align-items:center}.ai-book-row{display:flex;justify-content:center;align-items:center;gap:1rem;flex-wrap:wrap}.ai-book-row img{width:28%;max-width:140px;height:190px;object-fit:cover}.ai-copy{line-height:1.9}.highlight-label{color:var(--accent);font-family:Aggro,sans-serif;font-size:1.3rem}
+.genre-grid{display:flex;flex-wrap:wrap;gap:12px}.genre-item{flex:0 0 calc((100% - 36px)/4);height:165px;position:relative;overflow:hidden;border-radius:4px;background:#344454}.genre-item img{width:100%;height:100%;object-fit:cover}.genre-item::after{content:"";position:absolute;inset:40% 0 0;background:linear-gradient(transparent,#0009)}.genre-item span{position:absolute;z-index:1;bottom:12px;left:14px;color:#fff;font-weight:700}
+.thread-list .card{height:100%;border:1px solid #ececec;border-radius:5px;overflow:hidden}.thread-list .card-img-top{height:175px;object-fit:cover}.thread-list .card-body{display:flex;flex-direction:column}.thread-list .card-text{color:#777;font-size:.86rem;line-height:1.6}.thread-list .thread-meta{margin-top:auto;padding-top:1rem;font-size:.8rem;color:#777}.thread-list .book-label{color:var(--accent)}.thread .page-link{border:none!important;background:transparent!important;color:#666}.thread .page-item.active .page-link{color:var(--accent)!important;font-weight:bold;box-shadow:none}.thread .page-link:focus{box-shadow:none}
+/* 이미지 파일명이 다를 때 표시되는 안전한 대체 시각 요소 */img.fallback-image{background:#3a4754;border:1px solid #d6d6d6;object-fit:contain;font-size:0}
+@media(max-width:575.98px){.mobile-break{display:block}.site-nav .navbar-collapse{background:#242a32eb;padding:.6rem;border-radius:.5rem}.hero-section{min-height:75vh}.hero-title{font-size:1.35rem}.bestseller-container{display:block}.bestseller-title{margin-bottom:1rem}.book-row{grid-template-columns:repeat(2,minmax(0,1fr));padding-right:2.5rem}.book-cover{height:180px;width:125px}.genre-item{flex-basis:100%;height:190px}.section-wrap{width:90%}.ai-book-row img{height:150px}.thread-list .col{width:100%}}
+
+</style></head>
+<body>
+<!-- 베스트셀러 섹션 -->
+<section class="bestseller py-5">
+<div class="container bestseller-container d-lg-flex align-items-center gap-4">
+<h3 class="section-title bestseller-title">베스트셀러</h3>
+<!-- 
+          [과제 안내]
+          아래 영역에 Bootstrap Carousel 컴포넌트를 이용해
+          - 총 12권의 도서를 4권씩 나눈 슬라이드를 구현하고,
+          - 각 도서는 도서 커버 이미지와 제목으로 구성하며,
+          - 우측에만 표시되는 Next 컨트롤 버튼을 포함하도록 작성하세요.
+        -->
+<!-- 코드는 여기에 작성하시오 -->
+<div class="carousel slide bestseller-carousel" data-bs-interval="3500" data-bs-ride="carousel" id="bestsellerCarousel"><div class="carousel-inner"><div class="carousel-item active"><div class="book-row"><div><img alt="소년이 온다" class="book-cover" data-fallback="소년이 온다" src="assets/bestsellers/img1.jpeg"/><p class="book-name">소년이 온다</p></div><div><img alt="작별하지 않는다" class="book-cover" data-fallback="작별하지 않는다" src="assets/bestsellers/img2.jpeg"/><p class="book-name">작별하지 않는다</p></div><div><img alt="채식주의자" class="book-cover" data-fallback="채식주의자" src="assets/bestsellers/img3.jpeg"/><p class="book-name">채식주의자</p></div><div><img alt="불편한 편의점" class="book-cover" data-fallback="불편한 편의점" src="assets/bestsellers/img4.jpeg"/><p class="book-name">불편한 편의점</p></div></div></div><div class="carousel-item"><div class="book-row"><div><img alt="데미안" class="book-cover" data-fallback="데미안" src="assets/bestsellers/img5.jpeg"/><p class="book-name">데미안</p></div><div><img alt="아몬드" class="book-cover" data-fallback="아몬드" src="assets/bestsellers/img6.jpeg"/><p class="book-name">아몬드</p></div><div><img alt="모순" class="book-cover" data-fallback="모순" src="assets/bestsellers/img7.jpeg"/><p class="book-name">모순</p></div><div><img alt="달러구트 꿈 백화점" class="book-cover" data-fallback="달러구트 꿈 백화점" src="assets/bestsellers/img8.jpeg"/><p class="book-name">달러구트 꿈 백화점</p></div></div></div><div class="carousel-item"><div class="book-row"><div><img alt="어린 왕자" class="book-cover" data-fallback="어린 왕자" src="assets/bestsellers/img9.jpeg"/><p class="book-name">어린 왕자</p></div><div><img alt="사피엔스" class="book-cover" data-fallback="사피엔스" src="assets/bestsellers/img10.jpeg"/><p class="book-name">사피엔스</p></div><div><img alt="코스모스" class="book-cover" data-fallback="코스모스" src="assets/bestsellers/img11.jpeg"/><p class="book-name">코스모스</p></div><div><img alt="물고기는 존재하지 않는다" class="book-cover" data-fallback="물고기는 존재하지 않는다" src="assets/bestsellers/img12.jpeg"/><p class="book-name">물고기는 존재하지 않는다</p></div></div></div></div><button class="carousel-control-next" data-bs-slide="next" data-bs-target="#bestsellerCarousel" type="button"><span aria-hidden="true" class="carousel-control-next-icon"></span><span class="visually-hidden">다음</span></button></div></div>
+</section>
+<!-- Bootstrap JS -->
+<script crossorigin="anonymous" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>document.querySelectorAll('img[data-fallback]').forEach(img=>{img.addEventListener('error',()=>{img.classList.add('fallback-image');img.removeAttribute('src');img.alt=img.dataset.fallback+' (assets의 실제 파일명을 확인하세요)';},{once:true});});</script></body>
+</html>

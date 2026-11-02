@@ -1,0 +1,169 @@
+{% load static %}<!DOCTYPE html>
+<html lang="ko" data-theme="{{ ui_theme }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}댓글 증강 시스템{% endblock %} | ThRead</title>
+  {% if ui_theme == 'board' or ui_theme == 'desk' or ui_theme == 'console' %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap">
+  {% else %}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  {% if ui_theme == 'proof' %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap">
+  {% elif ui_theme == 'story' %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap">
+  {% endif %}
+  {% endif %}
+  <link rel="stylesheet" href="{% static 'comments/css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'comments/css/theme-picker.css' %}">
+  {# 파생 테마는 부모 레이아웃 CSS를 먼저 가져와야 정상적인 사이드바/스토리 화면이 나타납니다. #}
+  {% if ui_theme == 'glass' or ui_theme == 'console' %}
+  <link rel="stylesheet" href="{% static 'comments/css/theme-desk.css' %}">
+  {% elif ui_theme == 'brutal' %}
+  <link rel="stylesheet" href="{% static 'comments/css/theme-story.css' %}">
+  {% endif %}
+  {% with 'comments/css/theme-'|add:ui_theme|add:'.css' as theme_css %}
+  <link rel="stylesheet" href="{% static theme_css %}">
+  {% endwith %}
+  <link rel="stylesheet" href="{% static 'comments/css/enhancements.css' %}">
+  <link rel="stylesheet" href="{% static 'market/css/market.css' %}">
+</head>
+<body class="{% block body_class %}{% endblock %}">
+  <header class="topbar">
+    <a class="brand" href="{% url 'comments:index' %}">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-name">ThRead</span>
+      <span class="brand-sub">댓글 증강 시스템</span>
+    </a>
+    <nav class="topnav" aria-label="주요 메뉴">
+      <a href="{% url 'market:dashboard' %}">시장 현황</a>
+      <a href="{% url 'comments:index' %}">새 분석</a>
+      <a href="{% url 'comments:index' %}#history">분석 이력</a>
+    </nav>
+  </header>
+
+  {% block page %}
+  <main class="wrap">
+    <section class="searchbar {% block search_class %}{% endblock %}" aria-labelledby="search-title">
+      {% block search_intro %}<h2 id="search-title" class="sr-only">회사명 검색</h2>{% endblock %}
+      {% include 'comments/_search_form.html' %}
+      <p class="hint">회사명 일부만 입력해도 검색 결과 맨 위 종목을 자동으로 고릅니다.</p>
+      {% block search_extra %}{% endblock %}
+      {% if error_message %}<div class="alert alert-error" role="alert">{{ error_message }}</div>{% endif %}
+      <div id="fail-box" class="alert alert-error" role="alert" hidden></div>
+    </section>
+
+    {% include 'comments/_progress.html' %}
+
+    {% block content %}{% endblock %}
+  </main>
+  {% endblock %}
+
+  {% if show_theme_switcher %}
+  <details class="theme-picker">
+    <summary aria-label="디자인 선택">✦ 디자인 선택 <span class="picker-count">11가지</span></summary>
+    <div class="theme-picker-panel">
+      <strong>ThRead 디자인 갤러리</strong>
+      <p>선택한 디자인은 현재 세션에 적용됩니다.</p>
+      <div class="theme-picker-list">
+        {% for key, name in ui_themes.items %}
+          <a href="?theme={{ key }}" class="theme-option theme-option-{{ key }}" {% if key == ui_theme %}aria-current="true"{% endif %}><span class="theme-swatch"></span>{{ name }}</a>
+        {% endfor %}
+      </div>
+    </div>
+  </details>
+  {% endif %}
+  <footer class="footer">
+    <p>토스증권 커뮤니티 댓글을 요청할 때마다 새로 수집합니다. 증강 문장과 요약은 AI가 만든 결과라 실제 의견과 다를 수 있습니다.</p>
+    {% if show_theme_switcher %}
+    <p class="theme-switch">디자인 후보 :
+      {% for key, name in ui_themes.items %}
+        <a href="?theme={{ key }}" {% if key == ui_theme %}aria-current="true"{% endif %}>{{ name }}</a>
+      {% endfor %}
+    </p>
+    {% endif %}
+  </footer>
+
+  <script>
+  // 회사명 입력 -> 스트리밍으로 진행 상황 표시 -> 완료되면 결과 페이지로 이동
+  (function () {
+    const form = document.getElementById('company-form');
+    if (!form) return;
+    const input = form.querySelector('input[name="company"]');
+    const btn = document.getElementById('submit-btn');
+    const panel = document.getElementById('progress-panel');
+    const logList = document.getElementById('progress-log');
+    const failBox = document.getElementById('fail-box');
+    const stageOrder = ['input', 'crawl', 'filter', 'clean', 'augment', 'summary', 'save'];
+
+    function markStage(stage) {
+      const idx = stageOrder.indexOf(stage);
+      const all = stage === 'done';
+      document.querySelectorAll('.stage').forEach(function (el) {
+        const i = stageOrder.indexOf(el.dataset.stage);
+        el.classList.toggle('done', all || (idx > -1 && i < idx));
+        el.classList.toggle('active', !all && i === idx);
+      });
+    }
+    function addLog(text, cls) {
+      const li = document.createElement('li');
+      li.textContent = text;
+      if (cls) li.className = cls;
+      logList.appendChild(li);
+      logList.scrollTop = logList.scrollHeight;
+    }
+
+    // 예시 회사명 버튼 : 입력창을 채우고 바로 분석
+    document.querySelectorAll('[data-fill]').forEach(function (b) {
+      b.addEventListener('click', function () { input.value = b.dataset.fill; form.requestSubmit(); });
+    });
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      // F601 : 입력값이 없으면 아무 동작도 하지 않음
+      if (!input.value.trim()) { input.focus(); return; }
+
+      btn.disabled = true; btn.textContent = '분석 중';
+      failBox.hidden = true; panel.hidden = false; logList.innerHTML = '';
+      markStage('input');
+      document.querySelectorAll('.page-content').forEach(function (el) { el.hidden = true; });
+
+      try {
+        const res = await fetch(form.dataset.streamUrl, { method: 'POST', body: new FormData(form) });
+        if (res.status === 204) { panel.hidden = true; return; }
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+          let nl;
+          while ((nl = buffer.indexOf('\n')) >= 0) {
+            const lineText = buffer.slice(0, nl).trim();
+            buffer = buffer.slice(nl + 1);
+            if (!lineText) continue;
+            const msg = JSON.parse(lineText);
+            if (msg.type === 'progress') { markStage(msg.stage); addLog(msg.message); }
+            else if (msg.type === 'done') { markStage('done'); addLog('완료했습니다. 결과 화면으로 이동합니다.', 'ok'); window.location.href = msg.url; return; }
+            else if (msg.type === 'fail') { document.querySelectorAll('.stage.active').forEach(function (el) { el.classList.remove('active'); el.classList.add('failed'); }); addLog(msg.message, 'err'); failBox.textContent = msg.message; failBox.hidden = false; }
+          }
+        }
+      } catch (err) {
+        failBox.textContent = '연결이 끊겼습니다. 작업이 서버에서 계속 실행 중일 수 있습니다. 분석 이력에서 결과를 확인하세요. (' + err + ')';
+        failBox.hidden = false;
+      } finally {
+        btn.disabled = false; btn.textContent = '댓글 분석하기';
+      }
+    });
+  })();
+  </script>
+  {% block extra_script %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,73 @@
+/* E. 분석 워크스페이스 : 짙은 청록 사이드바 + 탭으로 나눈 작업 화면 */
+:root {
+  --bg: #F4F7F7;
+  --surface: #FFFFFF;
+  --surface-2: #EEF3F3;
+  --ink: #14272B;
+  --sub: #5C7175;
+  --line: #DCE4E5;
+  --line-soft: #EAF0F0;
+  --line-strong: #C3CFD1;
+  --accent: #0F5C63;
+  --accent-strong: #0F5C63;
+  --accent-ink: #FFFFFF;
+  --accent-weak: #DFEDEE;
+  --focus: #E8A92F;
+  --danger: #D14343;
+  --danger-weak: #FBE9E9;
+  --warn: #8A5A00;
+  --warn-weak: #FDF1D8;
+  --clean: #0F5C63;
+  --clean-weak: #DFEDEE;
+  --aug: #B5620E;
+  --aug-weak: #FBEEDD;
+  --ok: #0F5C63;
+  --mark: #FBEEDD;
+  --topbar-bg: rgba(255, 255, 255, .92);
+  --input-bg: #FFFFFF;
+  --radius-lg: 10px;
+  --radius-sm: 8px;
+  --radius-mark: 4px;
+  --font-ui: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-num: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  --h1: 32px;
+  --flow-num-size: 26px;
+}
+.brand-mark { background: #0F5C63; box-shadow: inset -8px -8px 0 #E8A92F; }
+
+.layout-desk .topbar { display: none; }
+.desk { display: grid; grid-template-columns: 280px minmax(0, 1fr); min-height: 100vh; }
+.desk-side { position: sticky; top: 0; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; padding: 22px 16px; background: #0F2E33; color: #DCE8E9; }
+.desk-brand { display: flex; align-items: center; gap: 10px; color: #FFFFFF; font-weight: 700; text-decoration: none; padding: 0 4px; }
+.desk-brand .brand-mark { width: 20px; height: 20px; border-radius: 4px; background: #E8A92F; box-shadow: none; }
+.desk-search .search { flex-direction: column; gap: 8px; }
+.desk-search .search input { background: #163C42; border-color: #285A61; color: #FFFFFF; font-size: 15px; padding: 11px 12px; }
+.desk-search .search input::placeholder { color: #8FB0B4; }
+.desk-search .btn { min-height: 42px; background: #E8A92F; color: #1E1400; width: 100%; }
+.desk-search .alert { font-size: 13px; }
+.desk-nav { display: flex; flex-direction: column; gap: 2px; }
+.desk-tab { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 10px 12px; border: 0; border-radius: 8px; background: transparent; color: #B9CDD0; text-align: left; font-size: 14px; cursor: pointer; }
+.desk-tab:hover { background: #163C42; color: #FFFFFF; }
+.desk-tab[aria-selected="true"] { background: #1D4A51; color: #FFFFFF; box-shadow: inset 3px 0 0 #E8A92F; }
+.desk-tab .n { font-family: var(--font-num); font-size: 12px; color: #8FB0B4; }
+.desk-history { margin-top: auto; padding: 0 4px; color: #8FB0B4; font-size: 13px; }
+
+.desk-main { min-width: 0; padding: 28px 32px 32px; }
+.desk-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 20px; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+.desk-head .stock-name { font-size: 34px; margin-bottom: 4px; }
+.desk-head .flow { margin: 0; flex: 0 1 auto; }
+.desk-head .flow-step { flex: 0 0 auto; min-width: 86px; padding: 10px 16px; }
+.desk-panel .columns { margin-bottom: 0; }
+.desk-panel > .panel { margin-bottom: 0; }
+.layout-desk .footer { margin-left: 280px; max-width: none; padding-left: 32px; }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #FFFFFF; }
+
+@media (max-width: 860px) {
+  .desk { grid-template-columns: 1fr; }
+  .desk-side { position: static; height: auto; }
+  .desk-nav { flex-direction: row; overflow-x: auto; }
+  .desk-tab { width: auto; white-space: nowrap; gap: 8px; }
+  .desk-history { display: none; }
+  .desk-main { padding: 20px 16px; }
+  .layout-desk .footer { margin-left: 0; padding-left: 16px; }
+}

@@ -1,0 +1,19 @@
+/* G · Aurora AI — vibrant, layered and playful */
+:root{--bg:#f3f4ff;--surface:#fff;--surface-2:#f5f3ff;--ink:#222345;--sub:#70718e;--line:#e6e5fa;--line-soft:#f0eefe;--line-strong:#d8d5fa;--accent:#6554f5;--accent-strong:#4838d8;--accent-ink:#fff;--accent-weak:#eae7ff;--focus:#a85dfb;--danger:#f45773;--danger-weak:#fff0f4;--warn:#9a6519;--warn-weak:#fff4df;--clean:#3668ef;--clean-weak:#ecf2ff;--aug:#a44dee;--aug-weak:#f5eaff;--ok:#3f8e75;--mark:#efe4ff;--topbar-bg:rgba(255,255,255,.82);--input-bg:#fff;--radius-lg:24px;--radius-sm:14px;--radius-mark:9px;--h1:44px;--stock-size:52px;--shadow:0 15px 42px rgba(84,66,161,.09)}
+body{background:radial-gradient(ellipse at 78% 4%,#d8d3ff 0,transparent 35%),radial-gradient(ellipse at 3% 28%,#dbeeff 0,transparent 32%),#f5f5ff;background-attachment:fixed}
+.brand-mark{background:linear-gradient(140deg,#35c8e9,#6554f5 55%,#d97cf2)}
+.searchbar.is-hero{padding:72px 44px 62px;border-radius:32px;background:linear-gradient(125deg,#fff 15%,#e8e5ff 70%,#d5edff);box-shadow:0 25px 70px rgba(86,80,162,.09);position:relative;overflow:hidden}
+.searchbar.is-hero:after{content:'✦';position:absolute;right:8%;top:10%;font-size:140px;color:#7060ff;opacity:.12;pointer-events:none}
+.intro h1{max-width:650px;font-weight:800}.btn{background:linear-gradient(115deg,#357fee,#7956f4)}
+.flow-step{border-left-color:#e8e5fa}.flow-num{letter-spacing:-.05em}.col-head{background:linear-gradient(90deg,#f8f7ff,#fff)}
+.col-augmented{outline:2px solid #ede4ff}.panel h2{letter-spacing:-.02em}
+@media(max-width:640px){.searchbar.is-hero{padding:36px 18px}.searchbar.is-hero:after{font-size:70px}.intro h1{font-size:33px}}
+
+
+/* Common refinements for this visual direction */
+.panel,.col,.flow,.searchbar.is-compact{transition:box-shadow .2s ease,transform .2s ease}
+.example:hover,.btn:hover{transform:translateY(-1px)}
+@media(prefers-reduced-motion:reduce){.panel,.col,.flow,.searchbar.is-compact,.example,.btn{transition:none;transform:none!important}}
+
+/* 기본 글꼴 토큰: 공통 base.css와 호환 */
+:root{--font-ui:"Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",sans-serif;--font-num:var(--font-ui);--font-text:var(--font-ui)}

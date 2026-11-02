@@ -1,0 +1,46 @@
+{# ---------------- 전처리 상세 (F605) ---------------- #}
+  <section class="panel details">
+    <h2 class="section-title">전처리 상세</h2>
+    <details open>
+      <summary>부적절 댓글 제거 (LLM 판단) <span class="count">{{ result.removed_comments|length }}개</span></summary>
+      <p class="muted">기준 : {{ result.criteria }}</p>
+      {% if result.removed_comments %}
+        <ul class="plain">{% for t in result.removed_comments %}<li class="is-removed"><span class="text">{{ t }}</span></li>{% endfor %}</ul>
+      {% else %}<p class="muted">기준에 해당하는 댓글이 없었습니다.</p>{% endif %}
+    </details>
+    <details>
+      <summary>정제 단계별 결과</summary>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>단계</th><th class="nowrap">개수</th><th>바뀌거나 제거된 댓글</th></tr></thead>
+          <tbody>
+          {% for s in result.clean_steps %}
+            <tr>
+              <td>{{ s.name }}{% if s.detail %}<div class="muted">{{ s.detail }}</div>{% endif %}</td>
+              <td class="nowrap num">{{ s.before }} → {{ s.after }}</td>
+              <td>
+                {% if s.changed %}<ul class="plain diff">{% for pair in s.changed %}<li><del>{{ pair.0 }}</del> <ins>{{ pair.1|default:"(빈 문자열)" }}</ins></li>{% endfor %}</ul>{% endif %}
+                {% if s.removed %}<ul class="plain">{% for t in s.removed %}<li class="is-removed"><span class="text">{{ t }}</span></li>{% endfor %}</ul>{% endif %}
+                {% if not s.changed and not s.removed %}<span class="muted">변화 없음</span>{% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>길이 기준 (IQR 임계값)</summary>
+      <div class="table-scroll">
+        <table class="kv">
+          <tbody>
+            <tr><th>명세 기준</th><td>{{ iqr.min_len }}자 이상 {{ iqr.max_len }}자 이하</td></tr>
+            <tr><th>Q1 / Q3 / IQR</th><td class="num">{{ iqr.q1|default:"-" }} / {{ iqr.q3|default:"-" }} / {{ iqr.iqr|default:"-" }}</td></tr>
+            <tr><th>IQR 정상 범위</th><td class="num">{% if iqr.iqr_lower is not None %}{{ iqr.iqr_lower }} ~ {{ iqr.iqr_upper }}{% else %}댓글이 적어 계산하지 않음{% endif %}</td></tr>
+            <tr><th>최종 적용 범위</th><td><strong>{{ iqr.lower|floatformat:"-1" }}~{{ iqr.upper|floatformat:"-1" }}자</strong>
+              <span class="muted">({% if iqr.mode == 'clamp' %}IQR 범위를 명세 기준 안으로 제한{% else %}명세 기준 고정{% endif %})</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+  </section>

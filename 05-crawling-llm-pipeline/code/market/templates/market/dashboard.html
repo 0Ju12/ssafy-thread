@@ -1,0 +1,98 @@
+{% extends 'comments/base.html' %}
+{% load static humanize %}
+{% block title %}시장 현황{% endblock %}
+{% block page %}
+<main class="mk-page wrap" id="market-dashboard">
+  <section class="mk-hero">
+    <div class="mk-hero-copy">
+      <div class="mk-eyebrow"><span class="mk-orbit"></span> ThRead MARKET INTELLIGENCE <span class="mk-pill">KOREA MARKET</span></div>
+      <h1>오늘의 시장을 읽는<br><em>더 선명한 시선.</em></h1>
+      <p>코스피·코스닥부터 급등락 종목과 환율까지.<br>시장 흐름을 확인하고, 궁금한 종목의 커뮤니티 의견을 AI로 분석해보세요.</p>
+      <form action="{% url 'market:search' %}" method="get" class="mk-hero-search">
+        {% if demo %}<input type="hidden" name="demo" value="1">{% endif %}
+        <label class="sr-only" for="mk-search">주식 검색</label>
+        <span class="mk-search-icon">⌕</span><input id="mk-search" name="q" placeholder="종목명 또는 6자리 종목코드" required minlength="1" maxlength="60" autocomplete="off">
+        <button type="submit">종목 찾기 <span aria-hidden="true">↗</span></button>
+      </form>
+    </div>
+    <div class="mk-hero-visual" aria-hidden="true">
+      <span class="mk-glow mk-glow-a"></span><span class="mk-glow mk-glow-b"></span>
+      <div class="mk-floating mk-floating-one"><span>MARKET DATA</span><strong>INDEX <i>↗</i></strong></div>
+      <div class="mk-visual-chart"><svg viewBox="0 0 360 175" preserveAspectRatio="none"><defs><linearGradient id="hero-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5D7CFF" stop-opacity="0.42"/><stop offset="1" stop-color="#5D7CFF" stop-opacity="0"/></linearGradient></defs><path d="M 0 146 L 34 137 L 61 145 L 92 100 L 126 114 L 163 73 L 197 91 L 236 45 L 270 60 L 307 24 L 334 42 L 360 8 L 360 175 L 0 175 Z" fill="url(#hero-fill)"/><path d="M 0 146 L 34 137 L 61 145 L 92 100 L 126 114 L 163 73 L 197 91 L 236 45 L 270 60 L 307 24 L 334 42 L 360 8" fill="none" stroke="#6580FA" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="mk-floating mk-floating-two"><span>ANALYZE</span><strong>AI INSIGHT <i>✦</i></strong></div>
+    </div>
+  </section>
+
+  <div class="mk-section-top"><div><span class="mk-overline">01 / MARKET OVERVIEW</span><h2>주요 시장 지수</h2></div>
+    <div class="mk-header-actions"><span class="mk-source-tag">{% if demo %}● 가상 데모 데이터{% elif market.as_of %}● {{ market.as_of }} 기준{% else %}○ 아직 수집 안 됨{% endif %}</span>{% if demo %}<a class="mk-refresh" href="{% url 'market:dashboard' %}?demo=0">실제 데이터 보기</a>{% else %}<form method="post" action="{% url 'market:refresh' %}">{% csrf_token %}<button type="submit" class="mk-refresh">↻ Selenium 새로 수집</button></form>{% endif %}</div>
+  </div>
+  {% if messages %}{% for message in messages %}<div class="mk-alert" role="status">{{ message }}</div>{% endfor %}{% endif %}
+  {% if market.error %}<div class="mk-alert" role="status"><strong>시장 데이터 안내</strong><span>{{ market.error }}</span><a href="?demo=1">가상 데이터로 디자인 체험 →</a></div>{% endif %}
+  {% if market.warnings and not demo %}<details class="mk-alert"><summary>수집 점검: 일부 항목이 누락되었습니다 ({{ market.warnings|length }}건)</summary><ul>{% for w in market.warnings %}<li>{{ w }}</li>{% endfor %}</ul></details>{% endif %}
+  {% if demo %}<div class="mk-demo-flag"><strong>DEMO MODE</strong> 모든 주가·지수·환율은 임의로 만든 가상 값입니다. <a href="?demo=0">실제 데이터 모드로 전환</a></div>{% endif %}
+
+  <section class="mk-indices" aria-label="시장 지수 카드">
+    {% for idx in market.indices %}
+    <article class="mk-index-card {% if idx.change_pct < 0 %}mk-down{% else %}mk-up{% endif %}">
+      <div class="mk-card-top"><span class="mk-market-symbol">{% if idx.name == 'KOSPI' %}K{% elif idx.name == 'KOSDAQ' %}Q{% else %}2{% endif %}</span><span class="mk-card-lbl">{{ idx.name }}</span><span class="mk-card-date">시장 시세</span></div>
+      <strong class="mk-index-number">{{ idx.value|floatformat:2 }}</strong>
+      <div class="mk-change-line"><span class="mk-percent">{% if idx.change_pct > 0 %}+{% endif %}{{ idx.change_pct|floatformat:2 }}%</span><span class="mk-delta">{% if idx.change > 0 %}+{% endif %}{{ idx.change|floatformat:2 }}pt</span></div>
+      <span class="mk-minispark" data-spark="{{ idx.name }}"></span>
+    </article>
+    {% empty %}
+    <article class="mk-empty-card"><span class="mk-empty-icon">◈</span><strong>시장 지수 준비 중</strong><p>댓글 분석을 실행하거나 ‘Selenium 새로 수집’을 눌러 토스증권 화면을 읽어오세요.</p></article>
+    {% endfor %}
+  </section>
+
+  <div class="mk-grid-main">
+    <section class="mk-panel mk-chart-panel" aria-labelledby="market-trend-title">
+      <div class="mk-panel-heading"><div><span class="mk-overline">MARKET TREND</span><h3 id="market-trend-title">시장 지수 흐름</h3><p>수집한 시점별 데이터로 그린 추이 (2회 이상 권장)</p></div>
+        <div class="mk-select-tabs" role="group" aria-label="지수 선택"><button class="active" data-market-series="KOSPI" type="button">KOSPI</button><button data-market-series="KOSDAQ" type="button">KOSDAQ</button></div>
+      </div>
+      <div class="mk-chart-wrap" id="mk-main-chart" role="img" aria-label="시장지수의 시장 시세 선 그래프"><p class="mk-no-data">연동 후 지수 추이가 표시됩니다.</p></div>
+      <div class="mk-chart-footer"><span>토스증권 공개 화면 · 저장한 수집 시점별 기록 (일봉 아님)</span><a href="https://www.tossinvest.com/" target="_blank" rel="noopener noreferrer">데이터 제공처 ↗</a></div>
+    </section>
+    <section class="mk-panel mk-breadth-panel" aria-labelledby="breadth-title">
+      <div class="mk-panel-heading"><div><span class="mk-overline">MARKET BREADTH</span><h3 id="breadth-title">인기 종목 상승·하락 비율</h3><p>조회된 랭킹 종목의 분포</p></div></div>
+      <div class="mk-donut-area">
+        <div class="mk-donut {% if not count %}mk-donut-empty{% endif %}" style="--rise:{{ rising_pct }}%;--fall-end:{{ fall_end_pct }}%" role="img" aria-label="조회된 인기 랭킹 종목 중 상승 {{ rising }}개 하락 {{ falling }}개 보합 {{ flat }}개"><div><strong>{{ count }}</strong><span>랭킹 종목</span></div></div>
+        <div class="mk-donut-legend"><div><span class="mk-dot mk-rdot"></span><span>상승</span><strong>{{ rising }}개</strong></div><div><span class="mk-dot mk-bdot"></span><span>하락</span><strong>{{ falling }}개</strong></div><div><span class="mk-dot mk-gdot"></span><span>보합</span><strong>{{ flat }}개</strong></div></div>
+      </div><p class="mk-panel-note">{% if is_rank_sample %}※ 전체 시장이 아니라 4종 인기 랭킹에 포함된 중복 제외 종목의 분포입니다.{% else %}데모 종목 기준의 분포입니다.{% endif %}</p>
+    </section>
+  </div>
+
+  <div class="mk-section-top mk-rank-heading"><div><span class="mk-overline">02 / MOVERS & MOST ACTIVE</span><h2>지금 주목받는 종목</h2><p>상승률·하락률·거래대금·거래량 기준 TOP 10</p></div></div>
+  <section class="mk-panel mk-ranking-panel" aria-labelledby="ranking-title">
+    <div class="mk-rank-toolbar"><div class="mk-rank-tabs" role="group" aria-label="랭킹 종류"><button data-rank="rise" class="active" type="button">↗ 상승 TOP 10</button><button data-rank="fall" type="button">↘ 하락 TOP 10</button><button data-rank="value" type="button">▥ 거래대금</button><button data-rank="volume" type="button">▤ 거래량</button></div>
+      <div class="mk-exchange-tabs" role="group" aria-label="시장 선택"><button data-market="ALL" class="active" type="button">전체</button><button data-market="KOSPI" type="button">KOSPI</button><button data-market="KOSDAQ" type="button">KOSDAQ</button></div></div>
+    <div class="mk-table-scroll"><table class="mk-rank-table"><thead><tr><th>순위</th><th>종목명</th><th>시장</th><th class="mk-align-right">현재/최근가</th><th class="mk-align-right">등락률</th><th class="mk-align-right">거래대금</th><th class="mk-align-right">바로가기</th></tr></thead>
+        <tbody id="mk-rank-body">
+        {% for s in ranks.rise.ALL %}
+        <tr><td><span class="mk-rank-num">{{ forloop.counter }}</span></td><td>{% if s.code %}<a class="mk-stock-link" href="{% url 'market:stock_detail' s.code %}{% if demo %}?demo=1{% endif %}">{{ s.name }}</a>{% else %}<span class="mk-stock-link">{{ s.name }}</span>{% endif %}<span class="mk-stock-code">{{ s.code|default:"코드 미확인" }}</span></td><td><span class="mk-market-badge">{{ s.market }}</span></td><td class="mk-align-right">{{ s.price|floatformat:0|intcomma }}</td><td class="mk-align-right"><span class="mk-rate mk-rise">+{{ s.change_pct|floatformat:2 }}%</span></td><td class="mk-align-right">{% if s.value != None %}{{ s.value|floatformat:0|intcomma }}{% else %}—{% endif %}</td><td class="mk-align-right"><a class="mk-analysis-link" href="{% url 'comments:index' %}?company={{ s.name|urlencode }}#search-title">댓글 분석 ↗</a></td></tr>
+        {% empty %}<tr><td colspan="7" class="mk-table-empty">시장 데이터가 없습니다. API를 연결하거나 데모 모드를 선택해 주세요.</td></tr>{% endfor %}
+        </tbody></table></div>
+    <div class="mk-table-caption"><span>※ 공개 화면에 보이는 순위만 수집 · 거래대금 단위는 원 · 일부 금액/코드는 미확인 가능</span><a href="{% url 'market:search' %}">종목 검색 ↗</a></div>
+  </section>
+
+  <div class="mk-section-top"><div><span class="mk-overline">03 / CURRENCY MONITOR</span><h2>주요 환율</h2><p>토스증권 홈 화면의 원/달러 환율</p></div><span class="mk-source-tag">{% if demo %}가상 값{% elif fx.as_of %}{{ fx.as_of }} 기준{% else %}환율 미연결{% endif %}</span></div>
+  {% if fx.error %}<div class="mk-alert" role="status">{{ fx.error }}</div>{% endif %}
+  <section class="mk-fx-grid">
+    <div class="mk-fx-cards">
+      {% for rate in fx.rates %}<article class="mk-fx-card"><div class="mk-fx-top"><span class="mk-fx-flag">{% if rate.symbol == 'USD/KRW' %}🇺🇸{% elif rate.symbol == 'EUR/KRW' %}🇪🇺{% else %}🇯🇵{% endif %}</span><div><span>{{ rate.name }}</span><strong>{{ rate.symbol }}</strong></div></div><div class="mk-fx-value">{{ rate.value|floatformat:2 }} <small>KRW</small></div><div class="mk-fx-sub">{{ rate.unit }} · {{ rate.date|default:fx.as_of }}</div></article>
+      {% empty %}<div class="mk-empty-card"><strong>환율 데이터를 불러올 수 없습니다.</strong><p>토스증권 홈페이지에 표시된 달러 환율을 Selenium으로 수집합니다.</p></div>{% endfor %}
+    </div>
+    <div class="mk-panel mk-fx-panel"><div class="mk-panel-heading"><div><span class="mk-overline">FX TREND</span><h3>USD / KRW 환율 추이</h3><p>실제 수집 시점별 변화 (일별 기준 환율 아님)</p></div><span class="mk-fx-badge">홈페이지 화면 수집</span></div>
+    <div class="mk-chart-wrap mk-fx-chart" id="mk-fx-chart" role="img" aria-label="원 달러 환율 추이 그래프"><p class="mk-no-data">환율 데이터가 없습니다.</p></div>
+    <div class="mk-chart-footer"><span>화면에 표시된 정보이며 실제 환전 호가와 다를 수 있습니다.</span><a href="https://www.tossinvest.com/" target="_blank" rel="noopener noreferrer">토스증권 ↗</a></div></div>
+  </section>
+  <section class="mk-bottom-cta"><div><span class="mk-overline">THREAD AI COMMENT ANALYSIS</span><h2>숫자 너머, 투자자의 목소리까지.</h2><p>궁금한 종목을 선택해 토스증권 댓글을 수집하고 AI로 분석해보세요.</p></div><a href="{% url 'comments:index' %}" class="mk-cta-button">댓글 분석 시작하기 ↗</a></section>
+  <div class="mk-disclaimer">토스증권 공개 웹페이지에 표시된 지수·주가·환율을 수집 시점에 기록한 것이며 실시간 체결가나 공식 종가 데이터로 보장하지 않습니다. 순위는 화면에 보이는 항목에 한정됩니다. 표시된 정보는 투자 권유가 아닙니다. {% if demo %}<strong>이 화면은 모두 가상 데이터입니다.</strong>{% endif %}</div>
+</main>
+{% endblock %}
+{% block extra_script %}
+{{ ranks|json_script:'mk-ranking-data' }}
+{{ market_chart|json_script:'mk-series-data' }}
+{{ fx_chart|json_script:'mk-fx-data' }}
+<script>window.THREAD_MARKET_DEMO = {{ demo|yesno:'true,false' }};</script>
+<script src="{% static 'market/js/dashboard.js' %}" defer></script>
+{% endblock %}

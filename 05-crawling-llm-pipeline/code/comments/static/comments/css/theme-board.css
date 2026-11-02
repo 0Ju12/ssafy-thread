@@ -1,0 +1,70 @@
+/* B. 시세 전광판 : 남색 바탕에 국내 증시 색(빨강 · 파랑)과 호박색 숫자. 단계별 개수가 시세판처럼 */
+:root {
+  --bg: #0F1E33;
+  --surface: #142640;
+  --surface-2: #1A3050;
+  --ink: #E6EDF7;
+  --sub: #8EA2BF;
+  --line: #22395C;
+  --line-soft: #1B3150;
+  --line-strong: #2E4C78;
+  --accent: #FFC24B;
+  --accent-strong: #FFC24B;
+  --accent-ink: #1F1500;
+  --accent-weak: rgba(255, 194, 75, .14);
+  --focus: #FFC24B;
+  --link: #7DB5FF;
+  --danger: #FF6B6E;
+  --danger-weak: rgba(255, 107, 110, .15);
+  --warn: #FFC24B;
+  --warn-weak: rgba(255, 194, 75, .12);
+  --clean: #5EA8FF;
+  --clean-weak: rgba(94, 168, 255, .15);
+  --aug: #4FD1C5;
+  --aug-weak: rgba(79, 209, 197, .14);
+  --ok: #4FD1C5;
+  --mark: rgba(255, 194, 75, .22);
+  --topbar-bg: rgba(12, 25, 43, .92);
+  --input-bg: #0B1729;
+  --radius-lg: 8px;
+  --radius-sm: 6px;
+  --radius-mark: 2px;
+  --font-ui: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-num: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  --h1: 30px;
+  --stock-size: 40px;
+  --flow-num-size: 44px;
+  --flow-bg: #0A1628;
+  --flow-num: #FFC24B;
+  --log-bg: #0A1628;
+  --log-ink: #C9D6EA;
+  --summary-bg: #0F2140;
+}
+::selection { background: #FFC24B; color: #1F1500; }
+.brand-mark { background: conic-gradient(#FF6B6E 0 25%, #5EA8FF 0 50%, #FFC24B 0 75%, #4FD1C5 0); }
+.intro h1 { font-weight: 600; }
+.stock-name { font-weight: 600; letter-spacing: -0.02em; }
+.stock-code { color: #FFC24B; }
+
+/* 전광판 : 칸마다 같은 폭, 위쪽에 단계 색 막대 */
+.flow { border-color: #22395C; }
+.flow-step { padding: 18px 20px 14px; border-left-color: #1B3150; }
+.flow-step::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: #2E4C78; }
+.flow-step.is-removed::before { background: var(--danger); }
+.flow-step.is-clean::before { background: var(--clean); }
+.flow-step.is-augmented::before { background: var(--aug); }
+.flow-step.is-total::before { background: #FFC24B; }
+.flow-step.is-total { background: #0F2140; }
+.flow-num { font-weight: 600; letter-spacing: -0.02em; text-shadow: 0 0 18px rgba(255, 194, 75, .25); }
+.flow-step.is-removed .flow-num, .flow-step.is-clean .flow-num, .flow-step.is-augmented .flow-num { text-shadow: none; }
+.flow-label { color: #8EA2BF; }
+
+.col-head { background: #11223A; }
+.col-head h2 { font-weight: 600; }
+.col-head::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--col); align-self: center; }
+.col ol { font-size: 14.5px; }
+.col li::marker { color: #5E7596; }
+.chip[aria-pressed="true"] { background: #FFC24B; border-color: #FFC24B; color: #1F1500; }
+.log li::before { content: "› "; color: #FFC24B; }
+.badge-original { background: #22395C; color: #C9D6EA; }
+.searchbar.is-compact { background: #142640; }

@@ -1,0 +1,87 @@
+{% extends 'comments/base.html' %}
+{# E. 분석 워크스페이스 : 왼쪽 사이드바(검색 + 단계 메뉴), 오른쪽은 탭으로 한 화면씩 #}
+
+{% block title %}{{ result.stock_name }} 분석 결과{% endblock %}
+{% block body_class %}layout-desk{% endblock %}
+
+{% block page %}
+<div class="desk">
+  <aside class="desk-side">
+    <a class="desk-brand" href="{% url 'comments:index' %}"><span class="brand-mark" aria-hidden="true"></span>ThRead 댓글 분석</a>
+    <div class="desk-search">
+      {% include 'comments/_search_form.html' %}
+      <div id="fail-box" class="alert alert-error" role="alert" hidden></div>
+    </div>
+    <nav class="desk-nav" role="tablist" aria-label="결과 보기">
+      <button role="tab" class="desk-tab" aria-selected="true" data-tab="compare"><span>3단 비교</span><span class="n">{{ result.raw_comments|length }}·{{ result.clean_comments|length }}·{{ result.augmented_comments|length }}</span></button>
+      <button role="tab" class="desk-tab" aria-selected="false" data-tab="summary"><span>댓글 요약</span></button>
+      <button role="tab" class="desk-tab" aria-selected="false" data-tab="insights"><span>통계 인사이트</span></button>
+      <button role="tab" class="desk-tab" aria-selected="false" data-tab="quality"><span>AI 문장 검증</span></button>
+      <button role="tab" class="desk-tab" aria-selected="false" data-tab="details"><span>전처리 상세</span><span class="n">{{ result.removed_comments|length }}</span></button>
+      <button role="tab" class="desk-tab" aria-selected="false" data-tab="records"><span>통합 데이터</span><span class="n">{{ result.records|length }}</span></button>
+    </nav>
+    <a class="desk-history" href="{% url 'comments:index' %}#history">분석 이력 보기</a>
+  </aside>
+
+  <main class="desk-main">
+    {% include 'comments/_progress.html' %}
+    <div class="page-content">
+      <header class="desk-head">
+        <div>
+          <p class="query-line"><span class="query">“{{ result.query }}”</span> 검색 결과</p>
+          <h1 class="stock-name">{{ result.stock_name }}{% if result.stock_code %} <span class="stock-code">{{ result.stock_code }}</span>{% endif %}</h1>
+          <p class="meta">{{ result.created_at|date:"Y-m-d H:i" }} 수집. 부적절 기준 “{{ result.criteria }}”</p>
+        </div>
+        <ol class="flow" aria-label="단계별 댓글 수">
+          <li class="flow-step"><span class="flow-num">{{ result.raw_comments|length }}</span><span class="flow-label">원본</span></li>
+          <li class="flow-step is-removed"><span class="flow-num">{{ result.removed_comments|length }}</span><span class="flow-label">제거</span></li>
+          <li class="flow-step is-clean"><span class="flow-num">{{ result.clean_comments|length }}</span><span class="flow-label">전처리</span></li>
+          <li class="flow-step is-augmented"><span class="flow-num">{{ result.augmented_comments|length }}</span><span class="flow-label">증강</span></li>
+        </ol>
+      </header>
+      {% for w in result.warnings %}<div class="alert alert-warn">{{ w }}</div>{% endfor %}
+
+      {% include 'comments/_market_snapshot.html' %}
+      <section class="desk-panel" data-panel="compare" role="tabpanel">
+        <div class="columns">
+          <article class="col col-original">
+            <header class="col-head"><h2>원본 데이터</h2><span class="count">{{ result.raw_comments|length }}개</span></header>
+            <ol>{% for item in originals %}<li class="{% if item.removed %}is-removed{% endif %}"><span class="text">{{ item.text }}</span>{% if item.removed %}<span class="tag">부적절</span>{% endif %}</li>{% endfor %}</ol>
+          </article>
+          <article class="col col-clean">
+            <header class="col-head"><h2>전처리 후</h2><span class="count">{{ result.clean_comments|length }}개</span><span class="col-note">길이 {{ iqr.lower|floatformat:"-1" }}~{{ iqr.upper|floatformat:"-1" }}자</span></header>
+            <ol>{% for text in result.clean_comments %}<li><span class="text">{{ text }}</span></li>{% empty %}<li class="empty-item">정제 후 남은 댓글이 없습니다.</li>{% endfor %}</ol>
+          </article>
+          <article class="col col-augmented">
+            <header class="col-head"><h2>증강 데이터</h2><span class="count">{{ result.augmented_comments|length }}개</span></header>
+            <ol>{% for orig, aug in pairs %}<li><span class="text">{{ aug }}</span><span class="from">전처리 {{ forloop.counter }}번에서 생성</span></li>{% empty %}<li class="empty-item">증강 데이터가 없습니다.</li>{% endfor %}</ol>
+          </article>
+        </div>
+      </section>
+      {% include 'comments/_export_actions.html' %}
+      <section class="desk-panel" data-panel="insights" role="tabpanel" hidden>{% include 'comments/_insights.html' %}</section>
+      <section class="desk-panel" data-panel="quality" role="tabpanel" hidden>{% include 'comments/_pair_compare.html' %}</section>
+      <section class="desk-panel" data-panel="summary" role="tabpanel" hidden>{% include 'comments/_summary.html' %}</section>
+      <section class="desk-panel" data-panel="details" role="tabpanel" hidden>{% include 'comments/_details.html' %}</section>
+      <section class="desk-panel" data-panel="records" role="tabpanel" hidden>{% include 'comments/_records.html' %}</section>
+    </div>
+  </main>
+</div>
+{% endblock %}
+
+{% block extra_script %}
+{% include 'comments/_records_script.html' %}
+<script>
+  // 사이드바 탭 : 한 번에 한 화면만
+  (function () {
+    const tabs = document.querySelectorAll('.desk-tab');
+    function show(name) {
+      tabs.forEach(function (t) { t.setAttribute('aria-selected', t.dataset.tab === name ? 'true' : 'false'); });
+      document.querySelectorAll('.desk-panel').forEach(function (p) { p.hidden = p.dataset.panel !== name; });
+    }
+    tabs.forEach(function (t) { t.addEventListener('click', function () { show(t.dataset.tab); history.replaceState(null, '', '#' + t.dataset.tab); }); });
+    const start = location.hash.slice(1);
+    if (document.querySelector('[data-panel="' + start + '"]')) show(start);
+  })();
+</script>
+{% endblock %}

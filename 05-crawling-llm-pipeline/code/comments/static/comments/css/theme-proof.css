@@ -1,0 +1,70 @@
+/* C. 교정지 : 전처리를 '교정'으로 보여 주는 화면. 제거는 빨간 펜, 증강은 형광펜, 댓글 본문은 명조 */
+:root {
+  --bg: #E9EEE6;
+  --surface: #FBFCF9;
+  --surface-2: #F1F4EE;
+  --ink: #1D2A23;
+  --sub: #627166;
+  --line: #D3DBCD;
+  --line-soft: #E4E9E0;
+  --line-strong: #B5C2AE;
+  --accent: #2C5A44;
+  --accent-strong: #2C5A44;
+  --accent-ink: #FFFFFF;
+  --accent-weak: #DCE8DF;
+  --focus: #2C5A44;
+  --danger: #C9184A;
+  --danger-weak: #FBE4EB;
+  --warn: #8A5A00;
+  --warn-weak: #FBF0D2;
+  --clean: #2C5A44;
+  --clean-weak: #DCE8DF;
+  --aug: #7A5A00;
+  --aug-weak: #FFF1B8;
+  --ok: #2C5A44;
+  --mark: #FFE97A;
+  --topbar-bg: rgba(233, 238, 230, .92);
+  --input-bg: #FFFFFF;
+  --radius-lg: 3px;
+  --radius-sm: 3px;
+  --radius-mark: 50%;
+  --shadow: 0 1px 0 #D3DBCD, 0 8px 24px -16px rgba(29, 42, 35, .35);
+  --font-ui: "Pretendard Variable", Pretendard, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-text: "Gowun Batang", "Nanum Myeongjo", "AppleMyungjo", serif;
+  --font-display: var(--font-text);
+  --font-num: var(--font-ui);
+  --text-size: 16px;
+  --text-leading: 1.75;
+  --h1: 36px;
+  --h1-tracking: -0.01em;
+  --stock-size: 48px;
+  --strike: 2px;
+  --summary-bg: #F4F7F1;
+  --log-bg: #F1F4EE;
+}
+.brand-mark { background: #C9184A; box-shadow: inset 0 0 0 5px #FBFCF9; border: 2px solid #C9184A; }
+.intro h1, .stock-name { font-weight: 700; }
+.stock-code { font-family: var(--font-ui); }
+
+/* 원고지처럼 : 단계 칸은 얇은 선으로만 구분 */
+.flow { background: transparent; border: 0; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--line-strong); border-radius: 0; box-shadow: none; }
+.flow-step { border-left-color: var(--line); }
+.flow-step.is-total { background: transparent; }
+.flow-num { font-family: var(--font-text); font-weight: 700; }
+
+.col-head { border-bottom: 2px solid var(--ink); }
+.col-head h2 { font-family: var(--font-text); font-size: 18px; }
+
+/* 빨간 펜 : 제거된 원본에 두꺼운 취소선과 여백 메모 */
+.col-original li.is-removed { position: relative; }
+.col-original li.is-removed .text { text-decoration-thickness: 2px; color: #8C978F; }
+.tag { background: transparent; color: var(--danger); border: 1.5px solid var(--danger); border-radius: 2px; transform: rotate(-3deg); }
+
+/* 형광펜 : 증강 문장 */
+.col-augmented .text { background: linear-gradient(transparent 58%, #FFE97A 58%, #FFE97A 92%, transparent 92%); box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.col-augmented .count { color: #7A5A00; }
+
+.summary-body { border-left: 3px solid var(--accent); }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #FFFFFF; }
+.example { background: #FBFCF9; }
+.record-text { font-family: var(--font-text); font-size: 15px; }

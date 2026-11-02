@@ -1,0 +1,71 @@
+{% extends 'comments/base.html' %}
+{# D. 커뮤니티 대화형 : 전처리 문장(왼쪽)과 AI 증강 문장(오른쪽)을 대화처럼 #}
+
+{% block title %}{{ result.stock_name }} 분석 결과{% endblock %}
+{% block body_class %}layout-chat{% endblock %}
+{% block search_class %}is-compact{% endblock %}
+
+{% block content %}
+<div class="page-content">
+  <div class="chat-layout">
+    <div class="chat-main">
+      <section class="post-head">
+        <div class="avatar" aria-hidden="true">{{ stock_initial }}</div>
+        <div>
+          <h1 class="stock-name">{{ result.stock_name }}{% if result.stock_code %} <span class="stock-code">{{ result.stock_code }}</span>{% endif %}</h1>
+          <p class="meta">“{{ result.query }}” 검색으로 찾은 종목입니다. {{ result.created_at|date:"n월 j일 H:i" }} 수집</p>
+        </div>
+      </section>
+
+      <ol class="flow" aria-label="단계별 댓글 수">
+        <li class="flow-step"><span class="flow-num">{{ result.raw_comments|length }}</span><span class="flow-label">원본 수집</span></li>
+        <li class="flow-step is-removed"><span class="flow-num">{{ result.removed_comments|length }}</span><span class="flow-label">부적절 제거</span></li>
+        <li class="flow-step is-clean"><span class="flow-num">{{ result.clean_comments|length }}</span><span class="flow-label">전처리 후</span></li>
+        <li class="flow-step is-augmented"><span class="flow-num">{{ result.augmented_comments|length }}</span><span class="flow-label">증강</span></li>
+      </ol>
+      {% for w in result.warnings %}<div class="alert alert-warn">{{ w }}</div>{% endfor %}
+
+      {% include 'comments/_market_snapshot.html' %}
+      <section class="thread" aria-labelledby="thread-title">
+        <h2 class="section-title" id="thread-title">다듬은 댓글과 AI가 바꿔 쓴 문장 <span class="count">{{ result.clean_comments|length }}개</span></h2>
+        <p class="muted">왼쪽은 전처리를 마친 실제 댓글, 오른쪽은 같은 뜻으로 AI가 다시 쓴 증강 문장입니다. 전처리 기준 길이는 {{ iqr.lower|floatformat:"-1" }}~{{ iqr.upper|floatformat:"-1" }}자입니다.</p>
+        {% for orig, aug in pairs %}
+          <div class="turn">
+            <p class="bubble bubble-in"><span class="who">댓글 {{ forloop.counter }}</span>{{ orig }}</p>
+            <p class="bubble bubble-out"><span class="who">AI 증강</span>{{ aug }}</p>
+          </div>
+        {% empty %}
+          {% for text in result.clean_comments %}
+            <div class="turn"><p class="bubble bubble-in"><span class="who">댓글 {{ forloop.counter }}</span>{{ text }}</p></div>
+          {% empty %}<p class="empty">전처리 후 남은 댓글이 없습니다.</p>{% endfor %}
+        {% endfor %}
+      </section>
+
+      <details class="panel originals">
+        <summary>원본 데이터 {{ result.raw_comments|length }}개 보기 <span class="count">부적절 {{ result.removed_comments|length }}개 포함</span></summary>
+        <div class="origin-list">
+          {% for item in originals %}
+            {% if item.removed %}
+              <p class="bubble bubble-hidden"><span class="who">원본 {{ forloop.counter }}, 부적절 판정으로 제외</span><span class="text">{{ item.text }}</span></p>
+            {% else %}
+              <p class="bubble bubble-raw"><span class="who">원본 {{ forloop.counter }}</span>{{ item.text }}</p>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </details>
+    </div>
+
+    <aside class="chat-side">
+      {% include 'comments/_summary.html' %}
+    </aside>
+  </div>
+
+  {% include 'comments/_export_actions.html' %}
+  {% include 'comments/_insights.html' %}
+  {% include 'comments/_pair_compare.html' %}
+  {% include 'comments/_details.html' %}
+  {% include 'comments/_records.html' %}
+</div>
+{% endblock %}
+
+{% block extra_script %}{% include 'comments/_records_script.html' %}{% endblock %}

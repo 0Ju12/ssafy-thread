@@ -1,0 +1,19 @@
+/* I · Neo Brutal — bold shapes, deliberate contrast */
+:root{--bg:#f8f4e8;--surface:#fffdf4;--surface-2:#ffe58f;--ink:#161616;--sub:#525252;--line:#171717;--line-soft:#ccc5ad;--line-strong:#161616;--accent:#f35b3f;--accent-strong:#b63120;--accent-ink:#111;--accent-weak:#ffdfd7;--focus:#2f57d7;--danger:#c8253c;--danger-weak:#ffd9de;--warn:#725200;--warn-weak:#ffeb93;--clean:#365ae1;--clean-weak:#e2e8ff;--aug:#8e4ad4;--aug-weak:#f0ddff;--ok:#25673a;--mark:#ffe375;--topbar-bg:#fff8dd;--input-bg:#fff;--radius-lg:5px;--radius-sm:4px;--radius-mark:0px;--h1:48px;--stock-size:54px;--flow-num-size:39px;--shadow:5px 5px 0 #151515;--panel-border:#151515}
+body{background-color:var(--bg);background-image:radial-gradient(#e1d9bf 1px,transparent 1px);background-size:16px 16px}
+.topbar{border-bottom:3px solid #151515}.brand-mark{background:#f35b3f;border:2px solid #151515;box-shadow:3px 3px 0 #151515}.brand-name{font-weight:900}
+.searchbar.is-hero{background:#fce563;border:3px solid #151515;border-radius:6px;padding:40px;margin:26px 0 30px;box-shadow:9px 9px 0 #151515}
+.intro h1{font-weight:900;letter-spacing:-.055em}.search input,.btn,.example{border:2px solid #151515;box-shadow:3px 3px 0 #151515}.btn{font-weight:900}
+.flow{border:2px solid #151515;overflow:visible}.flow-step{border-left:2px solid #151515}.flow-step:nth-child(2){background:#ffdae0}.flow-step:nth-child(4){background:#e8ddff}
+.col{border:2px solid #151515}.col-head{border-bottom:2px solid #151515;background:#ffe89c}.col-clean .col-head{background:#d9e6ff}.col-augmented .col-head{background:#edd7fc}
+.panel{border:2px solid #151515}.chip[aria-pressed=true]{background:#f35b3f;color:#111}
+@media(max-width:640px){.searchbar.is-hero{padding:22px;box-shadow:4px 4px 0 #151515}.flow-step{border-left:0;border-bottom:2px solid #151515}}
+
+
+/* Common refinements for this visual direction */
+.panel,.col,.flow,.searchbar.is-compact{transition:box-shadow .2s ease,transform .2s ease}
+.example:hover,.btn:hover{transform:translateY(-1px)}
+@media(prefers-reduced-motion:reduce){.panel,.col,.flow,.searchbar.is-compact,.example,.btn{transition:none;transform:none!important}}
+
+/* 기본 글꼴 토큰: 공통 base.css와 호환 */
+:root{--font-ui:"Noto Sans KR","Noto Sans CJK KR","Malgun Gothic",sans-serif;--font-num:var(--font-ui);--font-text:var(--font-ui)}

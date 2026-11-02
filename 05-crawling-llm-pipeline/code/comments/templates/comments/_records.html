@@ -1,0 +1,27 @@
+{# ---------------- 통합 데이터 (F607) ---------------- #}
+  <section class="panel records">
+    <h2 class="section-title">통합 데이터 <span class="count">{{ result.records|length }}건</span></h2>
+    <p class="muted">원본, 부적절 제거, 전처리, 증강 데이터를 하나의 결과로 묶어 DB에 저장했습니다. 단계 버튼으로 걸러 볼 수 있습니다.</p>
+    <div class="chips" id="stage-chips" role="group" aria-label="단계별 보기">
+      <button class="chip" aria-pressed="true" data-filter="all">전체</button>
+      <button class="chip" aria-pressed="false" data-filter="original">원본</button>
+      <button class="chip" aria-pressed="false" data-filter="removed">부적절 제거</button>
+      <button class="chip" aria-pressed="false" data-filter="clean">전처리</button>
+      <button class="chip" aria-pressed="false" data-filter="augmented">증강</button>
+    </div>
+    <div class="table-scroll">
+      <table id="records-table">
+        <thead><tr><th>단계</th><th class="num">번호</th><th>텍스트</th><th>비고</th></tr></thead>
+        <tbody>
+        {% for r in result.records %}
+          <tr data-stage="{{ r.stage }}">
+            <td><span class="badge badge-{{ r.stage }}">{% if r.stage == 'original' %}원본{% elif r.stage == 'removed' %}부적절 제거{% elif r.stage == 'clean' %}전처리{% else %}증강{% endif %}</span></td>
+            <td class="num muted">{{ r.index|add:1 }}</td>
+            <td class="record-text">{{ r.text }}</td>
+            <td class="muted">{% if r.stage == 'augmented' %}전처리 {{ r.origin_index|add:1 }}번에서 생성{% elif r.removed %}부적절 판정{% endif %}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>

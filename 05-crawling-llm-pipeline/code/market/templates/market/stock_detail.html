@@ -1,0 +1,12 @@
+{% extends 'comments/base.html' %}
+{% load static humanize %}
+{% block title %}{{ stock.name }} 시세{% endblock %}
+{% block page %}
+<main class="wrap mk-page mk-subpage"><div class="mk-back"><a href="{% url 'market:dashboard' %}{% if demo %}?demo=1{% endif %}">← 시장 현황으로</a></div>
+{% if demo %}<div class="mk-demo-flag"><strong>DEMO</strong> 실제 주가가 아닌 가상 시세입니다.</div>{% endif %}
+<section class="mk-stock-hero"><div><span class="mk-overline">STOCK SNAPSHOT · {{ stock.market }}</span><h1>{{ stock.name }} <small>{{ stock.code }}</small></h1><span class="mk-muted">{{ stock.date }} 기준 시세 · {{ market.stock_source }}</span></div><a class="mk-cta-button" href="{% url 'comments:index' %}?company={{ stock.name|urlencode }}#search-title">이 종목의 AI 댓글 분석 ↗</a></section>
+<div class="mk-stock-stats"><div><span>현재/최근가</span><strong>{{ stock.price|floatformat:0|intcomma }} <small>원</small></strong></div><div><span>전일 대비</span><strong class="{% if stock.change_pct < 0 %}mk-fall{% else %}mk-rise{% endif %}">{% if stock.change_pct > 0 %}+{% endif %}{{ stock.change_pct|floatformat:2 }}%</strong></div><div><span>거래량</span><strong>{{ stock.volume|floatformat:0|intcomma }} <small>주</small></strong></div><div><span>시장 구분</span><strong>{{ stock.market }}</strong></div></div>
+<section class="mk-panel mk-chart-panel"><div class="mk-panel-heading"><div><span class="mk-overline">CAPTURED PRICE TREND</span><h3>{{ stock.name }} 표시 가격 변화</h3><p>Selenium 실제 수집 시점별 표시 가격 (원)</p></div></div><div class="mk-chart-wrap mk-stock-chart" id="mk-stock-chart" role="img" aria-label="해당 종목의 크롤링 수집 시점별 표시가격 그래프"></div><div class="mk-chart-footer">토스증권 공개 화면 · 수집된 시점별 기록이며 일봉·종가 자료가 아닙니다. 2개 이상 수집하면 변화가 표시됩니다.</div></section>
+<section class="mk-bottom-cta"><div><span class="mk-overline">CONNECT WITH COMMENTS</span><h2>시장의 숫자와 커뮤니티의 생각을 함께.</h2><p>주가가 움직이는 이유를 단정하지 않고 댓글 원문과 AI 정제 결과를 확인할 수 있습니다.</p></div><a class="mk-cta-button" href="{% url 'comments:index' %}?company={{ stock.name|urlencode }}#search-title">댓글 분석으로 이동 →</a></section></main>
+{% endblock %}
+{% block extra_script %}{{ history|json_script:'mk-stock-series' }}<script src="{% static 'market/js/dashboard.js' %}" defer></script>{% endblock %}

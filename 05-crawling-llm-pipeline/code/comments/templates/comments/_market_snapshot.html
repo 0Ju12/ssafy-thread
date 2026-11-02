@@ -1,0 +1,15 @@
+{% if market_snapshot %}
+<section class="ts-market-snapshot" aria-label="댓글과 동시에 수집한 금융 정보">
+  <div class="ts-market-head"><div><span class="ts-market-kicker">SAME SESSION · SELENIUM</span><h2>댓글 수집 당시 시장 정보</h2><p>토스증권 공개 화면에서 댓글 검색 직전에 같은 브라우저로 수집했습니다.</p></div><span class="ts-market-date">{{ market_snapshot.captured_at|default:"수집 시각 미확인" }}</span></div>
+  {% if market_snapshot.market.demo %}<p class="ts-market-alert">데모: 아래 숫자는 모두 가상 값입니다.</p>{% endif %}
+  <div class="ts-market-grid">
+    {% for idx in market_snapshot.market.indices %}<div class="ts-market-tile"><small>{{ idx.name }}</small><strong>{{ idx.value|floatformat:2 }}</strong><span class="{% if idx.change_pct < 0 %}down{% else %}up{% endif %}">{% if idx.change_pct != None %}{% if idx.change_pct > 0 %}+{% endif %}{{ idx.change_pct|floatformat:2 }}%{% else %}등락률 미확인{% endif %}</span></div>{% endfor %}
+    {% for fx in market_snapshot.fx.rates %}<div class="ts-market-tile"><small>{{ fx.symbol }}</small><strong>{{ fx.value|floatformat:2 }}원</strong><span>원/달러 · 화면 표시값</span></div>{% endfor %}
+    {% if not market_snapshot.market.indices and not market_snapshot.fx.rates %}<p class="ts-market-alert">이 수집에서는 시장지수와 환율을 확인하지 못했습니다.</p>{% endif %}
+  </div>
+  {% if market_snapshot.market.ranking_lists.rise or market_snapshot.market.ranking_lists.fall %}
+  <div class="ts-market-ranks"><div><h3>급상승 TOP</h3>{% for s in market_snapshot.market.ranking_lists.rise|slice:':5' %}<p>{{ forloop.counter }}. {{ s.name }} <b>{{ s.change_pct|floatformat:2 }}%</b></p>{% endfor %}</div>
+  <div><h3>급하락 TOP</h3>{% for s in market_snapshot.market.ranking_lists.fall|slice:':5' %}<p>{{ forloop.counter }}. {{ s.name }} <b>{{ s.change_pct|floatformat:2 }}%</b></p>{% endfor %}</div></div>{% endif %}
+  <p class="ts-market-foot">수집 당시 화면 표시값입니다. 실시간 체결가 또는 검증된 종가가 아니며 일부 항목은 사이트 구조에 따라 누락될 수 있습니다. <a href="{% url 'market:dashboard' %}">시장 대시보드 보기 →</a></p>
+</section>
+{% endif %}

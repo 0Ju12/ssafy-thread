@@ -1,0 +1,14 @@
+<section class="panel progress" id="progress-panel" aria-live="polite" hidden>
+  <h2 class="section-title">크롤링 진행 상황</h2>
+  <ol class="stages">
+    <li class="stage" data-stage="input">입력</li>
+    <li class="stage" data-stage="crawl">검색과 댓글 수집</li>
+    <li class="stage" data-stage="filter">부적절 댓글 제거</li>
+    <li class="stage" data-stage="clean">정제</li>
+    <li class="stage" data-stage="augment">증강</li>
+    <li class="stage" data-stage="summary">요약</li>
+    <li class="stage" data-stage="save">저장</li>
+  </ol>
+  <ul id="progress-log" class="log"></ul>
+  <p class="muted">브라우저 실행과 LLM 호출 때문에 30초에서 1분 정도 걸립니다.</p>
+</section>
