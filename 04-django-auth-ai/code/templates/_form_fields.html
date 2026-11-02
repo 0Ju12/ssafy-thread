@@ -1,0 +1,29 @@
+{% comment %}
+  폼 칸을 Bootstrap 모양으로 그리는 공통 조각
+  사용법 : {% include '_form_fields.html' %}   (context 에 form 이 있어야 함)
+  ※ 유효성 검사 오류(field.errors, non_field_errors)를 칸 아래에 표시
+{% endcomment %}
+{% if form.non_field_errors %}
+  <div class="alert alert-danger">
+    {% for error in form.non_field_errors %}
+      <div>{{ error }}</div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% for field in form %}
+  <div class="mb-3">
+    <label class="form-label fw-semibold" for="{{ field.id_for_label }}">{{ field.label }}</label>
+    {% if field.widget_type == 'checkboxselectmultiple' %}
+      <div class="checkbox-list">{{ field }}</div>
+    {% else %}
+      {{ field }}
+    {% endif %}
+    {% if field.help_text %}
+      <div class="form-text">{{ field.help_text|safe }}</div>
+    {% endif %}
+    {% for error in field.errors %}
+      <div class="text-danger small mt-1">{{ error }}</div>
+    {% endfor %}
+  </div>
+{% endfor %}

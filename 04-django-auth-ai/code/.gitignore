@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# 가상환경
+venv/
+.venv/
+env/
+
+# Django
+db.sqlite3
+*.log
+media/
+
+# 비밀 정보 (API Key)
+.env
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

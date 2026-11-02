@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}ThRead{% endblock title %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <style>
+    .book-card { transition: transform .2s ease, box-shadow .2s ease; }
+    .book-card:hover { transform: translateY(-4px); box-shadow: 0 8px 18px rgba(0, 0, 0, .08); }
+    .book-card .card-text {
+      display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    /* 로그아웃 버튼(form)을 다른 nav 링크와 같은 모양으로 */
+    .nav-form-btn { background: none; border: 0; }
+    .author-photo { width: 140px; height: 180px; object-fit: cover; }
+    /* 관심 장르 체크박스 목록 정렬 */
+    .checkbox-list > div { margin-bottom: .25rem; }
+    .checkbox-list label { display: inline-flex; gap: .4rem; align-items: center; cursor: pointer; }
+    .checkbox-list input[type="checkbox"] { width: 1rem; height: 1rem; }
+  </style>
+</head>
+
+<body>
+  {% comment %}
+    공통 Navbar (F401) : 모든 페이지가 base.html 을 상속하므로 어디서나 같은 메뉴가 보임
+    로그인 여부에 따라 메뉴가 바뀜 (F406)
+  {% endcomment %}
+  <nav class="navbar navbar-expand-lg bg-success mb-4" data-bs-theme="dark">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'books:index' %}">ThRead</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="메뉴 열기">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'books:index' %}">INDEX</a>
+          </li>
+          {% if user.is_authenticated %}
+            {# 로그인한 사용자에게만 도서 생성 링크 출력 #}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'books:create' %}">CREATE</a>
+            </li>
+            {# F419 : 회원정보 수정 · 회원탈퇴 링크를 내 프로필 링크로 대체 (프로필 페이지에서 사용) #}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'accounts:profile' user.username %}">MY PROFILE</a>
+            </li>
+            <li class="nav-item">
+              {# 로그아웃은 POST 요청만 허용하므로 링크가 아닌 form 버튼으로 #}
+              <form action="{% url 'accounts:logout' %}" method="POST" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="nav-link nav-form-btn">LOGOUT</button>
+              </form>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'accounts:login' %}">LOGIN</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'accounts:signup' %}">SIGNUP</a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container pb-5">
+    {# messages : 뷰에서 messages.success() 등으로 남긴 알림을 다음 화면에서 한 번만 출력 #}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="닫기"></button>
+      </div>
+    {% endfor %}
+
+    {% block content %}
+    {% endblock content %}
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  <script>
+    // AI 기능 버튼(.ai-form) : 응답을 기다리는 동안 버튼을 잠가 중복 요청을 막고 진행 중임을 표시
+    document.querySelectorAll('.ai-form').forEach((form) => {
+      form.addEventListener('submit', () => {
+        const btn = form.querySelector('button[type="submit"]');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>AI 생성 중...';
+      });
+    });
+  </script>
+</body>
+</html>

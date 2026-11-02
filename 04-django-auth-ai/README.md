@@ -33,3 +33,28 @@ ThRead를 Django 5.2 서비스로 옮기고, 회원 인증과 생성형 AI 기�
 
 ## 기술
 Python · Django 5.2 · Bootstrap 5.3 · SQLite · LLM API(Responses API) · Wikipedia API · 알라딘 Open API · unittest.mock
+
+## 실행 화면
+
+| 비밀번호 변경 | 변경 후 로그인 유지 | 로그아웃(POST) | 회원 탈퇴 |
+|---|---|---|---|
+| ![](screenshots/13_change_password.png) | ![](screenshots/14_after_password.png) | ![](screenshots/15_logout.png) | ![](screenshots/16_delete_account.png) |
+
+자동 테스트 45개 통과:
+
+![](screenshots/17_tests.png)
+
+## 실행 방법
+
+```bash
+cd 04-django-auth-ai/code
+python -m venv venv && source venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env        # GMS_KEY, TTBKEY 입력 (없어도 AI 기능만 꺼지고 실행됨)
+python manage.py migrate
+python manage.py import_books   # 알라딘 API로 도서 불러오기 (TTBKEY 필요)
+python manage.py runserver
+python manage.py test           # 45 tests
+```
+
+> SSAFY 제공 데이터로 만든 샘플 fixture(`books/fixtures`)는 저장소에서 제외했습니다.

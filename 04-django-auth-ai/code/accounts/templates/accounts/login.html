@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}로그인 | ThRead{% endblock title %}
+
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <h1 class="mb-4">로그인</h1>
+      {# ?next= 가 있으면 로그인 폼 action 에도 그대로 붙여 보냄 (urlencode : ? & 한글을 %XX 로 변환) #}
+      <form action="{% url 'accounts:login' %}{% if request.GET.next %}?next={{ request.GET.next|urlencode }}{% endif %}" method="POST">
+        {% csrf_token %}
+        {% include '_form_fields.html' %}
+        <button type="submit" class="btn btn-primary w-100">로그인</button>
+      </form>
+      <p class="text-center text-muted mt-3 small">
+        아직 회원이 아니신가요? <a href="{% url 'accounts:signup' %}">회원가입</a>
+      </p>
+    </div>
+  </div>
+{% endblock content %}

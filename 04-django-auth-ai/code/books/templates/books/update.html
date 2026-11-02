@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}도서 수정 | ThRead{% endblock title %}
+
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <h1 class="mb-4">도서 수정 페이지</h1>
+      {# instance=book 으로 만든 폼이라 기존 데이터가 미리 입력되어 있음 #}
+      <form action="{% url 'books:update' book.pk %}" method="POST">
+        {% csrf_token %}
+        {% include '_form_fields.html' %}
+        <button type="submit" class="btn btn-primary">제출</button>
+        <a href="{% url 'books:detail' book.pk %}" class="btn btn-outline-secondary">취소</a>
+      </form>
+    </div>
+  </div>
+{% endblock content %}

@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ user_profile.username }}님의 프로필 | ThRead{% endblock title %}
+
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <h1 class="border-bottom pb-3 mb-4">{{ user_profile.username }}님의 프로필</h1>
+
+      {# user_profile : 조회한 회원 / user : 로그인한 사람 #}
+      <dl class="row">
+        <dt class="col-sm-4">아이디</dt>
+        <dd class="col-sm-8">{{ user_profile.username }}</dd>
+
+        <dt class="col-sm-4">이메일</dt>
+        <dd class="col-sm-8">{{ user_profile.email|default:'-' }}</dd>
+
+        <dt class="col-sm-4">이름</dt>
+        <dd class="col-sm-8">{{ user_profile.get_full_name_korean|default:'-' }}</dd>
+
+        <dt class="col-sm-4">성별</dt>
+        <dd class="col-sm-8">{{ user_profile.get_gender_display|default:'-' }}</dd>
+
+        <dt class="col-sm-4">나이</dt>
+        <dd class="col-sm-8">{% if user_profile.age is not None %}{{ user_profile.age }}세{% else %}-{% endif %}</dd>
+
+        <dt class="col-sm-4">주간 평균 독서 시간</dt>
+        <dd class="col-sm-8">{% if user_profile.weekly_avg_reading_time is not None %}{{ user_profile.weekly_avg_reading_time }}시간{% else %}-{% endif %}</dd>
+
+        <dt class="col-sm-4">연간 독서량</dt>
+        <dd class="col-sm-8">{% if user_profile.annual_reading_amount is not None %}{{ user_profile.annual_reading_amount }}권{% else %}-{% endif %}</dd>
+
+        <dt class="col-sm-4">관심 장르</dt>
+        <dd class="col-sm-8">{{ user_profile.get_interested_genres_display|default:'-' }}</dd>
+      </dl>
+
+      {# 본인 프로필일 때만 회원정보 수정 · 회원탈퇴 UI 출력 (F409, F410, F419) #}
+      {% if user == user_profile %}
+        <div class="d-flex gap-2 mb-3">
+          <a href="{% url 'accounts:update' %}" class="btn btn-secondary">회원정보 수정</a>
+          {# 회원탈퇴는 POST 요청만 허용 #}
+          <form action="{% url 'accounts:delete' %}" method="POST" onsubmit="return confirm('정말 탈퇴하시겠습니까?');">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">회원탈퇴</button>
+          </form>
+        </div>
+      {% endif %}
+
+      {# 추가 기능 : AI 맞춤 도서 추천 (본인 프로필에서만) #}
+      {% if user == user_profile %}
+        <div class="card mt-4">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+              <h2 class="h5 mb-0">AI 맞춤 도서 추천</h2>
+              <form action="{% url 'accounts:recommend' %}" method="POST" class="ai-form">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success btn-sm">
+                  {% if recommendations %}다시 추천받기{% else %}추천받기{% endif %}
+                </button>
+              </form>
+            </div>
+            <p class="text-muted small">관심 장르와 독서 습관을 바탕으로, ThRead 에 등록된 도서 중에서 골라 드려요.</p>
+            {% if recommendations %}
+              <ol class="list-group list-group-numbered">
+                {% for rec in recommendations %}
+                  <li class="list-group-item d-flex justify-content-between align-items-start gap-2">
+                    <div class="ms-1 me-auto">
+                      <a href="{% url 'books:detail' rec.id %}" class="fw-semibold">{{ rec.title }}</a>
+                      <span class="text-muted small">· {{ rec.author }}</span>
+                      <div class="small">{{ rec.reason }}</div>
+                    </div>
+                  </li>
+                {% endfor %}
+              </ol>
+              <p class="text-muted small mt-2 mb-0">※ AI가 추천한 결과로, 취향과 다를 수 있습니다.</p>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+
+      <hr>
+      <a href="{% url 'books:index' %}" class="btn btn-primary">Back</a>
+    </div>
+  </div>
+{% endblock content %}
