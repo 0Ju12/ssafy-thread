@@ -1,0 +1,4 @@
+from django.urls import path
+from . import views
+app_name='books'
+urlpatterns=[path('aladin/search/',views.aladin_search,name='aladin_search'),path('aladin/select/',views.aladin_select,name='aladin_select'),path('',views.index,name='index'),path('books/create/',views.create,name='create'),path('books/<int:pk>/',views.detail,name='detail'),path('books/<int:pk>/update/',views.update,name='update'),path('books/<int:pk>/delete/',views.delete,name='delete'),path('books/<int:pk>/threads/create/',views.thread_create,name='thread_create'),path('threads/<int:pk>/',views.thread_detail,name='thread_detail'),path('threads/<int:pk>/update/',views.thread_update,name='thread_update'),path('threads/<int:pk>/delete/',views.thread_delete,name='thread_delete'),path('threads/<int:pk>/like/',views.like,name='like'),path('threads/<int:pk>/comments/',views.comment_create,name='comment_create'),path('comments/<int:pk>/delete/',views.comment_delete,name='comment_delete')]
